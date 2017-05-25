@@ -1,0 +1,101 @@
+﻿@model HR.Models.AbsenceViewModel
+@using HR.Entity.Dto
+@{
+    ViewBag.Title = "Edit Absence";
+}
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+
+        @if (Model.Absence.CanApproveAbsence.Value && Model.Absence.ApprovalStateId != (int)ApprovalStates.Approved && Model.Absence.ApprovalStateId != (int)ApprovalStates.Declined)
+        {
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Quick Action<small></small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="" ng-controller="AbsenceController as model ">
+                        @*@if (Model.Permissions.CanApproveAbsence)
+                            {*@
+                        <a class="btn btn-success btn-lg" ng-bootbox-confirm="Are you sure you want to approve this absence?" ng-bootbox-confirm-action="model.approveAbsence(@Model.PersonnelId, @Model.Absence.AbsenceId)" ng-bootbox-confirm-action-cancel="">
+                            <i class="fa fa-check m-right-xs">
+                            </i>&nbsp;Approve
+                        </a>
+                        <a class="btn btn-danger btn-lg" ng-bootbox-confirm="Are you sure you want to decline this absence?" ng-bootbox-confirm-action="model.declineAbsence(@Model.PersonnelId, @Model.Absence.AbsenceId)" ng-bootbox-confirm-action-cancel="">
+                            <i class="fa fa-close m-right-xs">
+                            </i>&nbsp;Decline
+                        </a>
+                        @*}*@
+                        @*<a href="" class="btn btn-primary btn-lg">
+                            <i class="fa fa-calendar m-right-xs">
+                            </i>&nbsp;View In Planner
+                        </a>*@
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Edit absence @Model.PersonnelAbsenceEntitlement.Personnel.Fullname<small></small></h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-horizontal">
+                        @if (ViewContext.ViewData.ModelState.Any(x => x.Key == ""))
+                        {
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12 col-xs-12 col-md-offset-3">
+                                    @Html.ValidationSummary(false, null, new { @class = "row alert alert-error" })
+                                </div>
+                            </div>
+                        }
+
+
+                        <div class="text-center">
+                            <h1>
+                                <i class="fa @Model.Absence.ApprovalState.ApprovalStateIcon fa-fw" alt="@Model.Absence.ApprovalState.Name"></i>
+                                State: @Html.DisplayTextFor(model => model.Absence.ApprovalState.Name)
+                            </h1>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="form-control-required-example"> = Required</div>
+                        @Html.Partial("_Absence", Model)
+                        @if (Model.Permissions.CanEditAbsence && Model.Absence.ApprovalStateId == (int)ApprovalStates.Requested)
+                        {
+                            <div class="col-md-6 col-sm-12 col-xs-12 col-md-offset-3">
+                                <div class="form-group">
+                                    <div class="pull-right">
+                                        <button type="submit" class="btn btn-success" id="submit" disabled="disabled">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <a href="@Url.Action("Profile", "Personnel", new { id = Model.Absence.PersonnelId })" class="btn btn-primary" role="button">
+        <span class="fa fa-chevron-left"></span>&nbsp;Profile
+    </a>
+</div>
+
+@section scripts {
+    <script src="~/Scripts/App/Absence.js"></script>
+}

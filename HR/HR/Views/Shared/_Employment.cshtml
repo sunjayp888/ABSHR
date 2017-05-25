@@ -1,0 +1,148 @@
+﻿@using System.Linq
+@using Microsoft.Ajax.Utilities
+@model HR.Models.EmploymentViewModel
+
+
+@Html.HiddenFor(model => model.Employment.PersonnelId)
+@Html.HiddenFor(model => model.Employment.EndEmploymentReasonId)
+@Html.HiddenFor(model => model.Employment.EmploymentId)
+@Html.HiddenFor(model => model.Employment.CompanyId)
+@Html.HiddenFor(model => model.Employment.BuildingId)
+@Html.HiddenFor(model => model.Employment.JobTitleId)
+@Html.HiddenFor(model => model.Employment.JobGradeId)
+@Html.HiddenFor(model => model.Employment.WorkingPatternId)
+@Html.HiddenFor(model => model.PreviousEmploymentEndDate)
+@Html.HiddenFor(model => model.PreviousAbsencePolicyId)
+@if (ViewContext.ViewData.ModelState.Any(x => x.Key == "EmploymentError"))
+{
+    <div class="row">
+        <div class="col-md-6 col-sm-12 col-xs-12 col-md-offset-3">
+            <input id="ModelStateValue" name="ModelStateValue" type="hidden" value="@ViewContext.ViewData.ModelState.IsValid" />
+            @Html.ValidationSummary(false, null, new { @class = "row alert alert-error", id = "employmentError" })
+        </div>
+    </div>
+}
+else
+{
+    <div class="row hidden">
+        <div class="col-md-6 col-sm-12 col-xs-12 col-md-offset-3">
+            <div id="employmentError"></div>
+        </div>
+    </div>
+}
+<div class="form-group">
+    @Html.Label("Company and Building", new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        @Html.HiddenFor(m => m.SelectedCompanyId)
+        @Html.HiddenFor(m => m.SelectedBuildingId)
+        @Html.Partial("_EmploymentCompanyBuilding", Model)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.Label("Job Title and Grade", new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        @Html.HiddenFor(m => m.SelectedJobTitleId)
+        @Html.HiddenFor(m => m.SelectedJobGradeId)
+        @Html.Partial("_JobTitleJobGrades", Model)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Employment.EmploymentTypeId, new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        @Html.DropDownListFor(model => model.Employment.EmploymentTypeId, Model.EmploymentType, "Select ", new { @class = "form-control col-md-7 col-xs-12" })
+        @Html.ValidationMessageFor(model => model.Employment.EmploymentTypeId, "", new { @class = "help-block" })
+    </div>
+</div>
+
+@*<div class="form-group">
+    @Html.LabelFor(model => model.Employment.JobTitle, new {@class = "control-label col-md-3 col-sm-3 col-xs-12"})
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        @Html.TextBoxFor(model => model.Employment.JobTitle, new {@class = "form-control col-md-7 col-xs-12"})
+        @Html.ValidationMessageFor(model => model.Employment.JobTitle, "", new {@class = "help-block"})
+    </div>
+</div>*@
+@*<div class="form-group">
+    @Html.LabelFor(model => model.Employment.JobDescription, new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        @Html.TextBoxFor(model => model.Employment.JobDescription, new { @class = "form-control col-md-7 col-xs-12" })
+        @Html.ValidationMessageFor(model => model.Employment.JobDescription, "", new { @class = "help-block" })
+    </div>
+</div>*@
+<div class="form-group">
+    @Html.LabelFor(model => model.Employment.AbsencePolicyId, new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        @Html.DropDownListFor(model => model.Employment.AbsencePolicyId, Model.AbsencePolicy, "Select ", new { @class =Model.AbsencePolicyHasAbsence? "form-control col-md-7 col-xs-12 disable-control hide-control" : "form-control col-md-7 col-xs-12 " })
+        @Html.TextBoxFor(model => model.AbsencePolicyName, new { @class = Model.AbsencePolicyHasAbsence ? "form-control col-md-7 col-xs-12  disable-control" : "form-control col-md-7 col-xs-12  hide-control" })
+        @Html.ValidationMessageFor(model => model.Employment.AbsencePolicyId, "", new { @class = "help-block" })
+  
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.Employment.PublicHolidayPolicyId, new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        @Html.DropDownListFor(model => model.Employment.PublicHolidayPolicyId, Model.PublicHolidayPolicy, "Select ", new { @class = "form-control col-md-7 col-xs-12" })
+        @Html.ValidationMessageFor(model => model.Employment.PublicHolidayPolicyId, "", new { @class = "help-block" })
+    </div>
+</div>
+
+<div ng-controller="DepartmentController as model">
+    <div class="form-group">
+        @Html.Label("Departments", new {@class = "control-label col-md-3 col-sm-3 col-xs-12"})
+        <input type="hidden" id="@Html.IdFor(model => model.SelectedDepartmentIdsJson)" name="@Html.NameFor(model => model.SelectedDepartmentIdsJson)" ng-init="model.selectedDepartments = @Model.SelectedDepartmentIdsJson" value="{{model.selectedDepartments}}"/>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <ui-select multiple tagging ng-model="model.selectedDepartments" class="form-control" ng-change="model.filterSelected()" style="width: 100%" ng-disabled="model.departments.length <= 0">
+                <ui-select-match placeholder="Select Departments"><span class="square" ng-style="{'background-color' : '#' + $item.Hex }"></span> <span ng-bind-html="$item.Name"></span></ui-select-match>
+                <ui-select-choices repeat="department.DepartmentId as department in model.departments | filter:$select.search">
+                    <span class="square" ng-style="{'background-color' : '#' + department.Colour.Hex }"></span> <span ng-bind-html="department.Name"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+</div>
+
+<div ng-controller="TeamController as model">
+    <div class="form-group">
+        @Html.Label("Teams", new {@class = "control-label col-md-3 col-sm-3 col-xs-12"})
+        <input type="hidden" id="@Html.IdFor(model => model.SelectedTeamIdsJson)" name="@Html.NameFor(model => model.SelectedTeamIdsJson)" ng-init="model.selectedTeams = @Model.SelectedTeamIdsJson" value="{{model.selectedTeams}}"/>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <ui-select multiple tagging ng-model="model.selectedTeams" class="form-control" ng-change="model.filterSelected()" style="width: 100%" ng-disabled="model.teams.length <= 0">
+                <ui-select-match placeholder="Select Teams"><span class="square" ng-style="{'background-color' : '#' + $item.Hex }"></span> <span ng-bind-html="$item.Name"></span></ui-select-match>
+                <ui-select-choices repeat="team.TeamId as team in model.teams | filter:$select.search">
+                    <span class="square" ng-style="{'background-color' : '#' + team.Colour.Hex }"></span> <span ng-bind-html="team.Name"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Employment.ReportsToPersonnelId, new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        @Html.DropDownListFor(model => model.Employment.ReportsToPersonnelId, Model.ReportsTo, "Select ", new { @class = "form-control col-md-7 col-xs-12" })
+        @Html.ValidationMessageFor(model => model.Employment.ReportsToPersonnelId, "", new { @class = "help-block" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Employment.StartDate, new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+    <div class="col-md-6 col-sm-6 col-xs-12 begin">
+        @Html.TextBoxFor(model => model.Employment.StartDate, "{0:dd MMMM yyyy}", new { @class = Model.AbsencePolicyHasAbsence ? "form-control col-md-7 col-xs-12 date disable-control" : "form-control col-md-7 col-xs-12 date " })
+        @Html.ValidationMessageFor(model => model.Employment.StartDate, "", new { @class = "help-block" })
+    </div>
+</div>
+<div class="form-group end-date">
+    @Html.LabelFor(model => model.Employment.EndDate, new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+    <div class="col-md-6 col-sm-6 col-xs-12 end">
+        @Html.TextBoxFor(model => model.Employment.EndDate, "{0:dd MMMM yyyy}", new { @class = "form-control col-md-7 col-xs-12 date" })
+        @Html.ValidationMessageFor(model => model.Employment.EndDate, "", new { @class = "help-block" })
+    </div>
+</div>
+<div class="form-group termination-date">
+    @Html.LabelFor(model => model.Employment.TerminationDate, new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+    <div class="col-md-6 col-sm-6 col-xs-12 termination">
+        @Html.TextBoxFor(model => model.Employment.TerminationDate, "{0:dd MMMM yyyy}", new { @class = "form-control col-md-7 col-xs-12 date" })
+        @Html.ValidationMessageFor(model => model.Employment.TerminationDate, "", new { @class = "help-block" })
+    </div>
+</div>

@@ -1,0 +1,54 @@
+﻿@using HR.Entity.Dto
+<daily-schedule begin-date="model.schedule.beginDate" items="model.schedule.items" date-changed="model.retrieveAbsenceSchedule" item-url="/Personnel/Profile/" id="model.personnelId">    
+    <div ng-attr-title="{{slot.title}}" >        
+        <div ng-if="slot.isAbsence">
+            <div class="btn-group btn-group-xs pull-right">
+                <a class="btn btn-dark btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ng-click="$event.originalEvent.ngClickHandled = true">
+                    <i class="fa fa-chevron-down"></i>
+                </a>
+                <ul class="dropdown-menu slidedown" ng-init="model.canApproveAbsence(item.PersonnelId, slot)">
+                    <li ng-if="item.Permissions.CanEditAbsence || slot.CanApprove">
+                        <a class="text-primary" style="cursor: pointer;" ng-click="$event.originalEvent.ngClickHandled = true; model.absenceLink('Edit', item.PersonnelId, slot.AbsenceId)">
+                            Edit
+                        </a>
+                    </li>
+                    @if (Model.Permissions.CanCancelAbsence)
+                    {
+                        <li ng-if="item.Permissions.CanCancelAbsence">
+                            <a style="cursor: pointer;" ng-bootbox-confirm="Are you sure you want to cancel this absence?" ng-bootbox-confirm-action="model.cancelAbsence(item.PersonnelId, slot.AbsenceId)" ng-bootbox-confirm-action-cancel="" ng-click="$event.originalEvent.ngClickHandled = true;">
+                                Cancel
+                            </a>
+                        </li>
+                    }
+                    <li ng-if="slot.CanApprove === null">
+                        <a href="#">
+                            <i class="fa fa-circle-o-notch fa-spin fa-1x fa-fw "></i>
+                        </a>
+                    </li>
+                    <li ng-if="slot.CanApprove">
+                        <a style="cursor: pointer;" ng-bootbox-confirm="Are you sure you want to approve this absence?" ng-bootbox-confirm-action="model.approveAbsence(item.PersonnelId, slot.AbsenceId)" ng-bootbox-confirm-action-cancel="" ng-click="$event.originalEvent.ngClickHandled = true;">
+                            Approve
+                        </a>
+                    </li>
+                    <li ng-if="slot.CanApprove">
+                        <a style="cursor: pointer;" ng-bootbox-confirm="Are you sure you want to decline this absence?" ng-bootbox-confirm-action="model.declineAbsence(item.PersonnelId, slot.AbsenceId)" ng-bootbox-confirm-action-cancel="" ng-click="$event.originalEvent.ngClickHandled = true;">
+                            Decline
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <span class="pull-right">
+                <i class="fa fa-fw" ng-class="slot.status.ApprovalStateIcon" ng-attr-title="slot.status.name"></i>
+            </span>
+
+            <span ng-style="slot.status.ApprovalStateId != @ApprovalStates.Approved.GetHashCode() && {'font-style':'italic','font-weight':'bold'}">
+                <a ng-if="item.Permissions.CanEditAbsence || slot.CanApprove" ng-href="/Absence/Edit/{{item.PersonnelId}}/{{slot.AbsenceId}}"><span ng-bind="slot.details"></span></a>
+                <span ng-if="!item.Permissions.CanEditAbsence && !slot.CanApprove" ng-bind="slot.details"></span>
+            </span>
+        </div>
+        <div ng-if="!slot.isAbsence">
+            <span ng-bind="slot.details"></span>
+        </div>
+    </div>
+</daily-schedule>

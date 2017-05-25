@@ -1,0 +1,117 @@
+﻿@model HR.Models.JobTitleViewModel
+
+@{
+    ViewBag.Title = string.Format("Edit JobTitleView ({0})", Model.JobTitle.Name);
+}
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>
+                    @Model.JobTitle.Name <small>Edit Job Title</small>
+                </h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-horizontal">
+                        @if (ViewContext.ViewData.ModelState.Any(x => x.Key == ""))
+                        {
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12 col-xs-12 col-md-offset-3">
+                                    @Html.ValidationSummary(false, null, new { @class = "row alert alert-error" })
+                                </div>
+                            </div>
+                        }
+                        @Html.HiddenFor(model => Model.JobTitle.JobTitleId)
+                        @Html.Partial("_JobTitle", Model)
+                        <div class="col-md-6 col-sm-12 col-xs-12 col-md-offset-3">
+                            <div class="form-group">
+                                <div class="pull-right">
+                                    <button type="submit" class="btn btn-success">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                         
+                }                
+            </div>        
+
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_content">
+                <div class="x_title">
+                    <h2>Job Grade</h2>
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="form-horizontal" ng-controller="JobTitleJobGradeController as model" ng-init="model.initialise(@Model.JobTitle.JobTitleId)">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="x_content">
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    @Html.Label("Job Grade", new { @class = "control-label col-md-5 col-sm-5 col-xs-12" })
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="dropdown">
+                                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                <span class="fa fa-list fa-fw"></span>
+                                                <span ng-bind="model.ddJobGradeType.Name"></span>
+                                                <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                                <li ng-repeat="jobGradeType in model.ddJobGradeTypes">
+                                                    <span><a ng-click="model.changeGradeType(jobGradeType)" ng-bind="jobGradeType.Name"></a></span>
+                                                </li>
+                                            </ul>
+                                            <button type="button" class="btn btn-success" ng-click="model.assignJobTitleJobGrade()" ng-disabled="model.assigning">Assign</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-muted font-13 m-b-30">
+                            </p>
+                            @Html.Partial("_JobGrades")
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_content">
+                <div class="x_title">
+                    <h2>Job Title Documents</h2>
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="horizontal" ng-controller="JobTitleDocumentController as model" ng-init="model.initialise(@Model.JobTitle.JobTitleId)">
+                    @Html.Partial("_JobTitleDocument")
+                </div>
+
+            </div>   
+        </div>
+    </div>
+</div>
+    
+<div>
+    <a href="@Url.Action("Index")" class="btn btn-primary" role="button">
+        <span class="fa fa-chevron-left"></span>&nbsp;Back to list
+    </a>
+</div>

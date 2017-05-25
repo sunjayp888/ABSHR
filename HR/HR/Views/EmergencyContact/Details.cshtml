@@ -1,0 +1,23 @@
+﻿@model HR.Models.EmergencyContactViewModel
+
+@{
+    ViewBag.Title = "Emergency Contact Details";
+}
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Emergency Contact Details<small></small></h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                @Html.Partial("_EmergencyContactDetails", Model)
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.EmergencyContact.EmergencyContactId }) |
+    @Html.ActionLink("Back to Profile", "Profile", new { controller = "Personnel", id = @Model.EmergencyContact.PersonnelId })
+</div>

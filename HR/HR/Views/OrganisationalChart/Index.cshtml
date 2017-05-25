@@ -1,0 +1,51 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+
+@Styles.Render("~/Content/getOrgChart")
+
+
+
+<style type="text/css">
+    #organisationalChart {
+        width: 100%;
+        height: 100%;
+    }
+</style>
+<div ng-controller="OrganisationalChartController as model" ng-init="model.initialise()">
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Organisational Chart<small></small></h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <p class="text-muted font-13 m-b-30">
+                    </p>
+
+                    <div id="datatable_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                        @Html.Partial("_Filter")
+                        <br />
+                        <div class="row">
+
+                            <div class="col-md-10 col-sm-12 col-xs-12">
+                                <div id="organisationalChart"></div>
+                            </div>
+                            <div class="col-md-2 col-sm-12 col-xs-12 scheduler">
+                                <h4>Legend</h4>
+                                @Html.Partial("_ColourLegend")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@Scripts.Render("~/Scripts/getOrgChart")

@@ -1,0 +1,18 @@
+USE [HR]
+GO
+
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF EXISTS(SELECT 1  FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'ApprovalEntity')
+BEGIN
+	EXEC sp_rename 'ApprovalEntity', 'ApprovalEntityType'
+END
+
+IF EXISTS(SELECT 1  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'ApprovalEntityType' AND COLUMN_NAME = 'ApprovalEntityId')
+BEGIN
+	EXEC sp_RENAME 'ApprovalEntityType.ApprovalEntityId' , 'ApprovalEntityTypeId', 'COLUMN'
+END

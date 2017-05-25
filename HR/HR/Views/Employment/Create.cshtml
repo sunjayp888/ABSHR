@@ -1,0 +1,141 @@
+﻿@using System.Linq
+@model HR.Models.EmploymentViewModel
+@{
+    ViewBag.Title = "Create Employment";
+}
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        @if (Model.PreviousEmployment != null)
+        {
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>
+                        Previous Employment
+                    </h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    @using (Html.BeginForm("UpdatePreviousEmployment", "Employment", FormMethod.Post))
+                    {
+                        <div class="form-horizontal">
+                            <div id="previousEmployment">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.PreviousEmployment.StartDate, new {@class = "control-label col-md-3 col-sm-3 col-xs-12"})
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        @Html.TextBoxFor(model => model.PreviousEmployment.StartDate, "{0:dd MMMM yyyy}", new {@readonly = "readonly", @class = "form-control col-md-7 col-xs-12"})
+                                        @Html.ValidationMessageFor(model => model.PreviousEmployment.StartDate, "", new {@class = "help-block"})
+                                    </div>
+                                </div>
+                                <div class="form-group previousemploymentend">
+                                    @Html.LabelFor(model => model.PreviousEmployment.EndDate, new {@class = "control-label col-md-3 col-sm-3 col-xs-12"})
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        @Html.TextBoxFor(model => model.PreviousEmployment.EndDate, "{0:dd MMMM yyyy}", new {@class = "form-control col-md-7 col-xs-12 date", required = "required"})
+                                        @Html.ValidationMessageFor(model => model.PreviousEmployment.EndDate, "", new {@class = "help-block"})
+                                      
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-12 col-xs-12 col-md-offset-3">
+                                    <div class="form-group">
+                                        <div class="pull-right">
+                                            <button type="submit" id="previousEmploymentSave"  class="btn btn-success">Submit</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    @Html.HiddenFor(model => model.PreviousEmployment.PersonnelId)
+                    @Html.HiddenFor(model => model.PreviousEmployment.EmploymentId)
+                    @*@Html.HiddenFor(model => model.PreviousEmployment.JobTitle)*@
+                    @Html.HiddenFor(model => model.EditPreviousEmployment)
+                      
+                    }
+
+                </div>
+            </div>
+        }
+        @if (!Model.EditPreviousEmployment)
+        {
+            using (@Html.BeginForm("Create", "Employment", FormMethod.Post))
+            {
+                if (Model.PreviousEmployment != null)
+                {
+                    @Html.Hidden("PreviousEmployment.EndDate", Model.PreviousEmployment.EndDate)
+                }
+                @Html.HiddenFor(model => model.EditPreviousEmployment)
+                @Html.HiddenFor(model => model.PreviousEmploymentEndDate)
+              
+
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>
+                            Create new employment <small></small>
+                        </h2>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        @Html.AntiForgeryToken()
+                        <div class="form-horizontal">
+                            @if (ViewContext.ViewData.ModelState.Any(x => x.Key == ""))
+                            {
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-12 col-xs-12 col-md-offset-3">
+                                        @Html.ValidationSummary(false, null, new { @class = "row alert alert-error" })
+                                    </div>
+                                </div>
+                            }
+                            <div class="form-control-required-example"> = Required</div>
+                          
+                            @Html.Partial("_Employment", Model, new ViewDataDictionary(ViewData) { TemplateInfo = new TemplateInfo { HtmlFieldPrefix = "EmploymentViewModel" } })
+                            <div class="x_title">
+                                <h2>
+                                    Working Pattern <small></small>
+                                </h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div id="workingDays">
+                                @if (Model.WorkingPatternDays != null)
+                                {
+                                    @Html.Partial("_WorkingPattern", Model.WorkingPatternDays, new ViewDataDictionary(ViewData) { TemplateInfo = new TemplateInfo { HtmlFieldPrefix = "EmploymentViewModel.WorkingPatternDays" } })
+                                }
+                            </div>
+                            <div class="col-md-6 col-sm-12 col-xs-12 col-md-offset-3">
+                                <div class="form-group">
+                                    <div class="pull-right">
+                                        <button type="submit" class="btn btn-success">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+<div>
+    <a href="@Url.Action("Profile", "Personnel", new { id = Model.Employment.PersonnelId })" class="btn btn-primary" role="button">
+        <span class="fa fa-chevron-left"></span>&nbsp;Back to profile
+    </a>
+</div>
+
+@section scripts {
+    <script src="~/Scripts/App/EmploymentWorkingPattern.js"></script>
+    <script type="text/javascript">
+        jQuery(function() {
+            //for disabling Previous Employment details
+            if ($("#EditPreviousEmployment").val().toLowerCase() === 'false') {
+                $("#previousEmploymentSave").hide();
+                $("input[name='PreviousEmployment.EndDate']").attr("disabled", "disabled");
+            }
+           
+        });
+
+    </script>
+}

@@ -1,0 +1,55 @@
+﻿@model HR.Models.AbsenceViewModel
+@{
+    ViewBag.Title = "Create Absence";
+}
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Create new absence <small></small></h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-horizontal">
+                        @if (ViewContext.ViewData.ModelState.Any(x => x.Key == ""))
+                        {
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12 col-xs-12 col-md-offset-3">
+                                    @Html.ValidationSummary(false, null, new { @class = "row alert alert-error" })
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="row hidden">
+                                <div class="col-md-6 col-sm-12 col-xs-12 col-md-offset-3">
+                                    <div id="employmentError"></div>
+                                </div>
+                            </div>
+                        }
+                        <div class="form-control-required-example"> = Required</div>
+                        @Html.Partial("_Absence", Model)
+                        <div class="col-md-6 col-sm-12 col-xs-12 col-md-offset-3">
+                            <div class="form-group">
+                                <div class="pull-right">
+                                    <button type="submit" class="btn btn-success" id="submit" disabled="disabled">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <a href="@Url.Action("Profile", "Personnel", new { id = Model.Absence.PersonnelId })" class="btn btn-primary" role="button">
+        <span class="fa fa-chevron-left"></span>&nbsp;Profile
+    </a>
+</div>
+@section scripts {
+    <script src="~/Scripts/App/Absence.js"></script>
+}

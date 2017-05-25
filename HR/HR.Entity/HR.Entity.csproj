@@ -1,0 +1,228 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4829285D-04B9-46DD-A961-5B90E7200473}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HR.Entity</RootNamespace>
+    <AssemblyName>HR.Entity</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Absence.cs" />
+    <Compile Include="AbsenceDay.cs" />
+    <Compile Include="AbsencePolicy.cs" />
+    <Compile Include="AbsencePolicyEntitlement.cs" />
+    <Compile Include="AbsencePolicyPeriod.cs" />
+    <Compile Include="AbsenceType.cs" />
+    <Compile Include="ApprovalState.cs" />
+    <Compile Include="ApprovalEntityType.cs" />
+    <Compile Include="ApprovalLevelUser.cs" />
+    <Compile Include="ApprovalLevel.cs" />
+    <Compile Include="Approval.cs" />
+    <Compile Include="Dto\ApprovalTypes.cs" />
+    <Compile Include="Dto\OvertimeFilter.cs" />
+    <Compile Include="Dto\ApprovalFilter.cs" />
+    <Compile Include="Dto\AbsenceForApproval.cs" />
+    <Compile Include="Dto\PersonnelDetail.cs" />
+    <Compile Include="Dto\PersonnelFilter.cs" />
+    <Compile Include="Dto\OvertimePreferences.cs" />
+    <Compile Include="Dto\ApprovalStates.cs" />
+    <Compile Include="Dto\ForApproval.cs" />
+    <Compile Include="Dto\OvertimeSummary.cs" />
+    <Compile Include="Dto\OvertimeForApproval.cs" />
+    <Compile Include="Dto\Approver.cs" />
+    <Compile Include="Partials\ApprovalState.cs" />
+    <Compile Include="Partials\Approval.cs" />
+    <Compile Include="Partials\PersonnelApprovalModel.cs" />
+    <Compile Include="PersonnelApprovalModel.cs" />
+    <Compile Include="AspNetUsers.cs" />
+    <Compile Include="Colour.cs" />
+    <Compile Include="CompanyBuilding.cs" />
+    <Compile Include="Comparer\DepartmentComparer.cs" />
+    <Compile Include="Comparer\CompanyComparer.cs" />
+    <Compile Include="Comparer\ScheduleItemTypeComparer.cs" />
+    <Compile Include="Dto\PersonnelPublicHoliday.cs" />
+    <Compile Include="Dto\PublicHolidaySlot.cs" />
+    <Compile Include="Dto\Slot.cs" />
+    <Compile Include="ApprovalModel.cs" />
+    <Compile Include="Overtime.cs" />
+    <Compile Include="OvertimePreference.cs" />
+    <Compile Include="OvertimeState.cs" />
+    <Compile Include="Employment.cs" />
+    <Compile Include="JobTitleJobGrade.cs" />
+    <Compile Include="EmploymentDepartment.cs" />
+    <Compile Include="EmploymentPersonnelAbsenceEntitlement.cs" />
+    <Compile Include="EmploymentTeam.cs" />
+    <Compile Include="JobTitle.cs" />
+    <Compile Include="JobGrade.cs" />
+    <Compile Include="Partials\Absence.cs" />
+    <Compile Include="Partials\AbsenceDay.cs" />
+    <Compile Include="Partials\AbsencePeriod.cs" />
+    <Compile Include="Partials\AbsencePolicy.cs" />
+    <Compile Include="Partials\AbsencePolicyEntitlement.cs" />
+    <Compile Include="Partials\AbsencePolicyPeriod.cs" />
+    <Compile Include="Partials\AbsenceStatus.cs" />
+    <Compile Include="Partials\AbsenceType.cs" />
+    <Compile Include="Partials\ApprovalLevelUser.cs" />
+    <Compile Include="Partials\ApprovalLevel.cs" />
+    <Compile Include="Partials\AspNetUsers.cs" />
+    <Compile Include="Partials\Building.cs" />
+    <Compile Include="Partials\Company.cs" />
+    <Compile Include="Partials\CompanyBuilding.cs" />
+    <Compile Include="Partials\Country.cs" />
+    <Compile Include="Partials\Department.cs" />
+    <Compile Include="Partials\EmergencyContact.cs" />
+    <Compile Include="Partials\Employment.cs" />
+    <Compile Include="Partials\ApprovalModel.cs" />
+    <Compile Include="Partials\Overtime.cs" />
+    <Compile Include="Partials\Frequency.cs" />
+    <Compile Include="Partials\Host.cs" />
+    <Compile Include="Partials\JobTitle.cs" />
+    <Compile Include="Partials\JobGrade.cs" />
+    <Compile Include="Partials\Organisation.cs" />
+    <Compile Include="Partials\Personnel.cs" />
+    <Compile Include="Partials\PersonnelAbsenceEntitlement.cs" />
+    <Compile Include="Partials\PersonnelSearchField.cs" />
+    <Compile Include="Partials\PublicHoliday.cs" />
+    <Compile Include="Partials\PublicHolidayPolicy.cs" />
+    <Compile Include="Partials\Site.cs" />
+    <Compile Include="Partials\EmploymentType.cs" />
+    <Compile Include="Partials\Team.cs" />
+    <Compile Include="Partials\WorkingPattern.cs" />
+    <Compile Include="Partials\WorkingPatternDay.cs" />
+    <Compile Include="Personnel.cs" />
+    <Compile Include="PersonnelAbsenceEntitlement.cs" />
+    <Compile Include="PublicHoliday.cs" />
+    <Compile Include="PublicHolidayPolicy.cs" />
+    <Compile Include="EmploymentType.cs" />
+    <Compile Include="Team.cs" />
+    <Compile Include="Dto\AbsencePart.cs" />
+    <Compile Include="AbsencePeriod.cs" />
+    <Compile Include="Dto\AbsenceRange.cs" />
+    <Compile Include="Dto\AbsenceRequest.cs" />
+    <Compile Include="Dto\AbsenceSlot.cs" />
+    <Compile Include="AbsenceStatus.cs" />
+    <Compile Include="Alert.cs" />
+    <Compile Include="AspNetUsersAlertSchedule.cs" />
+    <Compile Include="Building.cs" />
+    <Compile Include="Company.cs" />
+    <Compile Include="Comparer\ScheduleItemComparer.cs" />
+    <Compile Include="Comparer\INotAbsenceDayComparer.cs" />
+    <Compile Include="Country.cs" />
+    <Compile Include="Department.cs" />
+    <Compile Include="Dto\AbsenceStatusMessage.cs" />
+    <Compile Include="Dto\Permissions.cs" />
+    <Compile Include="Dto\TenantOrganisation.cs" />
+    <Compile Include="EmergencyContact.cs" />
+    <Compile Include="Extensions\EnumExtensions.cs" />
+    <Compile Include="Frequency.cs" />
+    <Compile Include="Host.cs" />
+    <Compile Include="Interfaces\INotAbsenceDay.cs" />
+    <Compile Include="Interfaces\IOrganisationFilterable.cs" />
+    <Compile Include="Dto\OrderBy.cs" />
+    <Compile Include="Organisation.cs" />
+    <Compile Include="Dto\PagedResult.cs" />
+    <Compile Include="Dto\Paging.cs" />
+    <Compile Include="PersonnelSearchField.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Dto\Role.cs" />
+    <Compile Include="Dto\Schedule.cs" />
+    <Compile Include="Dto\ScheduleItem.cs" />
+    <Compile Include="Dto\ScheduleItemType.cs" />
+    <Compile Include="Site.cs" />
+    <Compile Include="UserAuthorisationFilter.cs" />
+    <Compile Include="Validation\DateGreaterThanAttribute.cs" />
+    <Compile Include="WorkingPattern.cs" />
+    <Compile Include="WorkingPatternDay.cs" />
+    <Compile Include="Dto\CanBeBookedWorkingPatternDay.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

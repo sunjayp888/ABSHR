@@ -1,0 +1,86 @@
+﻿@model HR.Models.EmergencyContactViewModel
+<div class="form-control-required-example"> = Required</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.EmergencyContact.Relationship, new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        @Html.TextBoxFor(model => model.EmergencyContact.Relationship, new { @class = "form-control col-md-7 col-xs-12" })
+        @Html.ValidationMessageFor(model => model.EmergencyContact.Relationship, "", new { @class = "help-block" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.EmergencyContact.Title, new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+    <div class="col-md-6 col-sm-6 col-xs-12">        
+        @Html.TextBoxFor(model => model.EmergencyContact.Title, new { @class = "form-control col-md-7 col-xs-12" })
+        @Html.ValidationMessageFor(model => model.EmergencyContact.Title, "", new { @class = "help-block" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.EmergencyContact.Forenames, new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        @Html.TextBoxFor(model => model.EmergencyContact.Forenames, new { @class = "form-control col-md-7 col-xs-12" })
+        @Html.ValidationMessageFor(model => model.EmergencyContact.Forenames, "", new { @class = "help-block" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.EmergencyContact.Surname, new {@class = "control-label col-md-3 col-sm-3 col-xs-12"})
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        @Html.TextBoxFor(model => model.EmergencyContact.Surname, new {@class = "form-control col-md-7 col-xs-12"})
+        @Html.ValidationMessageFor(model => model.EmergencyContact.Surname, "", new {@class = "help-block"})
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.EmergencyContact.CountryId, new {@class = "control-label col-md-3 col-sm-3 col-xs-12"})
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        @Html.DropDownListFor(model => model.EmergencyContact.CountryId, Model.Countries, null, new {@class = "form-control col-md-7 col-xs-12"})
+        @Html.ValidationMessageFor(model => model.EmergencyContact.CountryId, "", new {@class = "help-block"})
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.EmergencyContact.Address1, new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        @Html.TextBoxFor(model => model.EmergencyContact.Address1, new { @class = "form-control col-md-7 col-xs-12" })
+        @Html.ValidationMessageFor(model => model.EmergencyContact.Address1, "", new { @class = "help-block" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.EmergencyContact.Address2, " ", new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        @Html.TextBoxFor(model => model.EmergencyContact.Address2, new { @class = "form-control col-md-7 col-xs-12" })
+        @Html.ValidationMessageFor(model => model.EmergencyContact.Address2, "", new { @class = "help-block" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.EmergencyContact.Address3, " ", new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        @Html.TextBoxFor(model => model.EmergencyContact.Address3, new { @class = "form-control col-md-7 col-xs-12" })
+        @Html.ValidationMessageFor(model => model.EmergencyContact.Address3, "", new { @class = "help-block" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.EmergencyContact.Address4, " ", new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        @Html.TextBoxFor(model => model.EmergencyContact.Address4, new { @class = "form-control col-md-7 col-xs-12" })
+        @Html.ValidationMessageFor(model => model.EmergencyContact.Address4, "", new { @class = "help-block" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.EmergencyContact.Postcode, new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+    <div class="col-md-6 col-sm-6 col-xs-12">
+
+        @Html.TextBoxFor(model => model.EmergencyContact.Postcode, new { @class = "form-control col-md-7 col-xs-12" })
+        @Html.ValidationMessageFor(model => model.EmergencyContact.Postcode, "", new { @class = "help-block" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.EmergencyContact.Telephone, new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        @Html.TextBoxFor(model => model.EmergencyContact.Telephone, new { @class = "form-control col-md-7 col-xs-12" })
+        @Html.ValidationMessageFor(model => model.EmergencyContact.Telephone, "", new { @class = "help-block" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.EmergencyContact.Mobile, new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        @Html.TextBoxFor(model => model.EmergencyContact.Mobile, new { @class = "form-control col-md-7 col-xs-12" })
+    </div>
+</div>

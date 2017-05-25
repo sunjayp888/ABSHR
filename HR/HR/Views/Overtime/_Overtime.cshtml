@@ -1,0 +1,121 @@
+﻿@using HR.Extensions
+@model HR.Models.OvertimeViewModel
+@using HR.Entity.Dto
+
+<div class="form-group">
+    <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12 col-md-offset-2">
+        <div class="tile-stats">
+            <div class="count">
+                @if (@Model.OvertimeSummary != null)
+                {
+                    <span>
+                        @Model.OvertimeSummary.PaidHours
+                    </span>
+                }
+                else
+                {
+                    <span>
+                        0
+                    </span>
+                }
+            </div>
+            <h3>Paid Hours</h3>
+        </div>
+    </div>
+    <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12">
+        <div class="tile-stats">
+            <div class="count">
+                @if (@Model.OvertimeSummary != null)
+                {
+                    @Model.OvertimeSummary.TOILHours
+                }
+                else
+                {
+                    <span>
+                        0
+                    </span>
+                }
+            </div>
+            @*<div class="count">@Model.OvertimeSummary.TOILHours</div>*@
+            <h3>Time Of In Lieu</h3>
+        </div>
+    </div>
+</div>
+<div class="form-control-required-example"> = Required</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.Overtime.Date, new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+    <div class="col-md-6 col-sm-6 col-xs-12 dob">
+        @if (Model.Overtime.ApprovalStateId == (int)ApprovalStates.Requested)
+        {
+            @Html.TextBoxFor(model => model.Overtime.Date, "{0:dd MMMM yyyy}", new { @class = "form-control col-md-7 col-xs-12 date" })
+        }
+        else
+        {
+            @Html.TextBoxFor(model => model.Overtime.Date, "{0:dd MMMM yyyy}", new { @class = "form-control col-md-7 col-xs-12", @readonly = "readonly" })
+        }
+        @Html.ValidationMessageFor(model => model.Overtime.Date, "", new { @class = "help-block" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.Overtime.Hours, new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        @if (Model.Overtime.ApprovalStateId == (int)ApprovalStates.Requested)
+        {
+            @Html.TextBoxFor(model => model.Overtime.Hours, new { @type = "number", @class = "form-control col-md-7 col-xs-12" })
+        }
+        else
+        {
+            @Html.TextBoxFor(model => model.Overtime.Hours, new { @type = "number", @class = "form-control col-md-7 col-xs-12", @readonly = "readonly" })
+        }
+        @Html.ValidationMessageFor(model => model.Overtime.Hours, "", new { @class = "help-block" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.Overtime.OvertimePreferenceId, new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        @if (Model.Overtime.ApprovalStateId == (int)ApprovalStates.Requested)
+        {
+            @Html.DropDownListFor(model => model.Overtime.OvertimePreferenceId, Model.OvertimePreferences, null, new { @class = "form-control col-md-7 col-xs-12" })
+        }
+        else
+        {
+            @Html.DropDownListFor(model => model.Overtime.OvertimePreferenceId, Model.OvertimePreferences, null, new { @class = "form-control col-md-7 col-xs-12", @disabled = "disabled" })
+
+        }
+        @Html.ValidationMessageFor(model => model.Overtime.OvertimePreferenceId, "", new { @class = "help-block" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.Overtime.Reason, new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        @if (Model.Overtime.ApprovalStateId == (int)ApprovalStates.Requested)
+        {
+            @Html.TextAreaFor(model => model.Overtime.Reason, new { @class = "form-control col-md-7 col-xs-12" })
+        }
+        else
+        {
+            @Html.TextAreaFor(model => model.Overtime.Reason, new { @class = "form-control col-md-7 col-xs-12", @readonly = "readonly" })
+
+        }
+        @Html.ValidationMessageFor(model => model.Overtime.Reason, "", new { @class = "help-block" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.Overtime.Comment, new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        @if (Model.Overtime.ApprovalStateId == (int)ApprovalStates.Requested)
+        {
+            @Html.TextAreaFor(model => model.Overtime.Comment, new { @class = "form-control col-md-7 col-xs-12" })
+        }
+        else
+        {
+            @Html.TextAreaFor(model => model.Overtime.Comment, new { @class = "form-control col-md-7 col-xs-12", @readonly = "readonly" })
+        }
+        @Html.ValidationMessageFor(model => model.Overtime.Comment, "", new { @class = "help-block" })
+    </div>
+</div>
+@Html.HiddenFor(model => model.Overtime.CreatedBy)
+@Html.HiddenFor(model => model.Overtime.PersonnelId)
+@Html.HiddenFor(model => model.Overtime.CreatedDateUtc)
+
+@*Condition that this person can approve the overtime*@

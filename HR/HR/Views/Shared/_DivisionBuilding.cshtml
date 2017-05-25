@@ -1,0 +1,120 @@
+﻿@using Microsoft.Ajax.Utilities
+
+<div class="dropdown" id="divisionBuildingDiv">
+    <input id="DivisionBuildingSelectedId" type="hidden" name="DivisionBuildingSelectedId" value="@Model.DivisionBuildingSelectedId">
+    <input id="CountryId" type="hidden" name="CountryId" value="@ViewData["CountryId"]">
+
+    <button class="btn btn-default btn-md dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        <span id="DivisionColour" class="square" style="background-color: #@ViewData["DivisionColour"]"></span>
+        <span id="DivisionName">@ViewData["DivisionName"]</span>
+        <span id="BuildingName">@ViewData["BuildingName"]</span>
+        <span class="caret"></span>
+    </button>
+
+    <div class="dropdown-menu divisionbuilding" role="menu" aria-labelledby="dropdownMenu1">
+        <table class="table table-striped table-bordered table-hover dataTable no-footer" style="margin-top: 0!important; margin-bottom: 0 !important; ">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Company</th>
+                    <th>Building</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @*@foreach (var item in Model.DivisionBuildinglist)
+                {
+                    <tr onclick="SetDivisionBuilding('@item.DivisionBuildingId', '@item.DivisionColour', '@item.DivisionName', '@item.BuildingName', '@item.CountryId') ">
+                        <td><span class="square" style="background-color: #@item.DivisionColour"></span></td>
+                        <td><span>@item.DivisionName</span></td>
+                        <td><span>@item.BuildingName</span></td>
+                    </tr>
+                }*@
+
+            </tbody>
+        </table>
+    </div>
+  @*  <button style="pointer-events:initial;" type="button" class="btn btn-success" onclick="EditDivisionCountry();"> Edit Division/Country</button>*@
+</div>
+
+<script>
+    function EditDivisionCountry() {
+        var divisionBuildingId = jQuery("#DivisionBuildingSelectedId").val();
+        var countryId = jQuery("#CountryId").val();
+        var dataValue = divisionBuildingId.split("#");
+        var divisionId = dataValue[0];
+        window.location = "/Division/" + divisionId + "/country/" + countryId + "/Edit/";
+    }
+
+    function displayWorkingDays() {
+
+        jQuery("#workingDays input:checkbox").prop("disabled", function () {
+            return !jQuery("#overrideWorkingDays").is(':checked');
+        });
+
+        jQuery("#submit").prop("disabled", function () {
+            return jQuery("#workingDays").html().length === 0;
+        });
+
+
+        if (jQuery("#workingDays").html().length === 0) {
+            jQuery("#employmentError")
+                .addClass("row alert alert-error")
+                .html("<ul><li>Unable to find the default working pattern.</li></ul>")
+                .show();
+            jQuery("#employmentError")
+                .parent()
+                .closest(".row")
+                .removeClass("hidden");
+        }
+        else {
+            if (jQuery('#ModelStateValue').val()) {
+                jQuery("#employmentError")
+                    .hide()
+                    .parent()
+                    .closest(".row")
+                    .addClass("hidden");
+            }
+        }
+    }
+
+    function loadWorkingDays() {
+
+        if (!jQuery("#overrideWorkingDays").is(':checked')) {
+
+            var divisionBuildingId = jQuery("#DivisionBuildingSelectedId").val();
+            var dataValue = divisionBuildingId.split("#");
+            var divisionId = dataValue[0],
+                buildingId = dataValue[1];
+            jQuery("#EmploymentViewModel_Employment_DivisionId").val(divisionId);
+            jQuery("#EmploymentViewModel_Employment_BuildingId").val(buildingId);
+
+            jQuery.ajax({
+                url: '/Employment/GetWorkingPatternRecord?divisionId=' + divisionId + '&buildingId=' + buildingId + '&htmlFieldPrefix=EmploymentViewModel.WorkingPatternDays',
+                type: 'GET',
+                data: "",
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    jQuery("#workingDays").html(data);
+                    displayWorkingDays();
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    jQuery("#workingDays").html("");
+                    displayWorkingDays();
+                }
+            });
+        }
+        else {
+            displayWorkingDays();
+        }
+
+    }
+    function SetDivisionBuilding(DivisionBuildingId, DivisionColour, DivisionName, BuildingName, CountryId) {
+        document.getElementById("DivisionColour").style.backgroundColor = "#" + DivisionColour;
+        document.getElementById("DivisionName").innerHTML = DivisionName;
+        document.getElementById("BuildingName").innerHTML = BuildingName;
+        document.getElementById("DivisionBuildingSelectedId").value = DivisionBuildingId;
+        document.getElementById("CountryId").value = CountryId;
+        loadWorkingDays();
+    }
+</script>

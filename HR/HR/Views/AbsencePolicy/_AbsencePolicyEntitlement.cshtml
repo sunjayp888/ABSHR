@@ -1,0 +1,61 @@
+﻿@model HR.Models.AbsencePolicyViewModel
+
+<div class="form-control-required-example"> = Required</div>
+@Html.HiddenFor(model => Model.AbsencePolicyEntitlement.AbsencePolicyEntitlementId)
+@Html.HiddenFor(model => Model.AbsencePolicyEntitlement.AbsencePolicyId)
+@Html.HiddenFor(model => Model.AbsencePolicyEntitlement.AbsenceTypeId)
+
+
+<div class="form-group">
+    @Html.LabelFor(model => model.AbsencePolicyEntitlement.HasEntitlement, new { @class = "control-label col-md-4 col-sm-4 col-xs-12" })
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        <div class="checkbox">
+            <label>
+                @Html.CheckBoxFor(model => model.AbsencePolicyEntitlement.HasEntitlement, new { autocomplete = "off" })
+            </label>
+        </div>
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.AbsencePolicyEntitlement.FrequencyId, new { @class = "control-label col-md-4 col-sm-4 col-xs-12" })
+    <div class="col-md-4 col-sm-4 col-xs-12">
+        @Html.DropDownListFor(model => model.AbsencePolicyEntitlement.FrequencyId, Model.Frequencies, null, new { @class = "form-control col-md-7 col-xs-12" })
+        @Html.ValidationMessageFor(model => model.AbsencePolicyEntitlement.FrequencyId, "", new { @class = "help-block" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.AbsencePolicyEntitlement.Entitlement, new { @class = "control-label col-md-4 col-sm-4 col-xs-12" })
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        @Html.TextBoxFor(model => model.AbsencePolicyEntitlement.Entitlement, new { @type = "number", @class = "form-control col-md-7 col-xs-12" })
+        @Html.ValidationMessageFor(model => model.AbsencePolicyEntitlement.Entitlement, "", new { @class = "help-block" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.AbsencePolicyEntitlement.MaximumCarryForward, new { @class = "control-label col-md-4 col-sm-4 col-xs-12" })
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        @Html.TextBoxFor(model => model.AbsencePolicyEntitlement.MaximumCarryForward, new { @type = "number", @class = "form-control col-md-7 col-xs-12" })
+        @Html.ValidationMessageFor(model => model.AbsencePolicyEntitlement.MaximumCarryForward, "", new { @class = "help-block" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.AbsencePolicyEntitlement.IsUnplanned, new { @class = "control-label col-md-4 col-sm-4 col-xs-12" })
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        <div class="checkbox">
+            <label>
+                @Html.CheckBoxFor(model => model.AbsencePolicyEntitlement.IsUnplanned, new { autocomplete = "off" })
+            </label>
+        </div>
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.AbsencePolicyEntitlement.IsPaid, new { @class = "control-label col-md-4 col-sm-4 col-xs-12" })
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        <div class="checkbox">
+            <label>
+                @Html.CheckBoxFor(model => model.AbsencePolicyEntitlement.IsPaid, new { autocomplete = "off" })
+            </label>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/App/AbsenceType.js"></script>

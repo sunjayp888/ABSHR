@@ -1,0 +1,127 @@
+﻿@using HR.Extensions
+@model HR.Models.JobTitleViewModel
+<div class="col-md-12 col-sm-12 col-xs-12">    
+        
+        <div class="x_content">
+            <div class="form-horizontal">
+                <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-6 col-sm-offset-6">
+                            <div class="dropdown">
+
+                                <button type="button" class="btn btn-success"  ng-click="model.removeError()" data-toggle="modal"  data-target="#jobTitleDocumentModal">New Document</button>
+                            </div>
+                        </div>
+                </div>
+            </div>
+            <p class="text-muted font-13 m-b-30">
+            </p>
+            <div id="datatable_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                <div class="row">
+                    <div class="col-xs-12">
+                        @Html.Partial("Pagination/_pageSize")
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <table wt-responsive-table class="table table-striped table-bordered table-hover dataTable no-footer" role="grid" aria-describedby="datatable-fixed-header_info">
+                            <thead>
+                                <tr role="row">
+                                    <th>Name</th>
+
+                                    @if (User.IsInAnyRoles("Admin"))
+                                    {
+                                        <th>Actions</th>
+                                    }
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="jobTitleDocument in model.jobTitleDocuments" class="odd gradeX" ng-click="$event.originalEvent.ngClickHandled">
+                                    <td><span ng-bind="jobTitleDocument.Name"></span></td>
+                                    @if (User.IsInAnyRoles("Admin", "SuperAdmin"))
+                                    {
+                                        <td>
+                                            <div class="btn-group pull-right">
+                                                <a class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false" ng-click="$event.originalEvent.ngClickHandled = true;">
+                                                    <i class="fa fa-chevron-down"></i>
+                                                </a>
+                                                <ul class="dropdown-menu">
+                                                    <li ng-show="model.loadingActions"><i class="fa fa-circle-o-notch fa-spin fa-1x fa-fw "></i></li>
+                                                    <li class="Delete" ng-hide="model.IsJobTitleDocumentMapped">
+                                                        <a style="cursor: pointer;"
+                                                           ng-bootbox-confirm="Are you sure you want to delete this jobTitleDocument - {{jobTitleDocument.Name}}"
+                                                           ng-bootbox-confirm-action="model.deleteJobTitleDocument(jobTitleDocument.DocumentDetailId)"
+                                                           ng-bootbox-confirm-action-cancel="" ng-click="$event.originalEvent.ngClickHandled = true;">
+                                                            Delete
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a ng-href="/JobTitleDocument/Document/{{jobTitleDocument.DocumentDetailId}}">Download</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    }
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                @Html.Partial("Pagination/_pagination")
+            </div>
+        </div>
+    </div> 
+
+<div class="modal fade" id="jobTitleDocumentModal" ng-hide="model.ShowModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Create Documents</h2>
+            </div>
+            <div class="modal-body">
+                <div class="form-group" ng-show="model.Errors.length > 0">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12 col-xs-12 col-md-offset-3">
+                            <div class="validation-summary-errors row alert alert-error" data-valmsg-summary="false">
+                                <ul class="errors">
+                                    <li ng-repeat="error in model.Errors"><span ng-bind="error"></span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Document Name</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" class="form-control col-md-7 col-xs-12 required" ng-model="model.name"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">File</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="file" file-model="model.documentFile" class="form-control required" accept=".txt,.pdf,.doc,.docx,.xls,.xlsx,.jpg,.png,.gif" />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <div class="col-md-6 col-sm-12 col-xs-12 col-md-offset-3">
+                    <div class="form-group">
+                        <div class="pull-right col-md-7">
+                            <div class="col-md-3">
+                                <button class="btn btn-success" ng-click="model.createJobTitleDocument()">Save</button>
+                            </div>
+                            <div class="pull-right col-md-6">
+                                <button type="button" id="btnCancel" class="btn btn-success" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+﻿@using HR.Extensions
+@*<div class="row">*@
+    <div class="col-xs-12">
+        <ui-select multiple tagging ng-model="model.employmentDepartments" class="form-control" on-remove="model.deleteEmploymentDepartment($item)" on-select="model.createEmploymentDepartment($item)"
+                   @*ng-change="model.filterSelected()"*@
+                    style="width:100%" 
+                   @*ng-disabled="model.organisationalChartViewmodel.PersonnelDetailFilter.Department.length <= 1"*@
+                   >
+            <ui-select-match placeholder="Select Department"><span class="square" ng-style="{'background-color' : '#' + $item.Hex }"></span> <span ng-bind-html="$item.Name"></span></ui-select-match>
+            <ui-select-choices repeat="Department in model.departments | filter:$select.search">
+                <span class="square" ng-style="{'background-color' : '#' + Department.Hex }"></span> <span ng-bind-html="Department.Name"></span>
+            </ui-select-choices>
+        </ui-select>
+    </div>
+@*</div>*@

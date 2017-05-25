@@ -1,0 +1,43 @@
+﻿
+@model HR.Models.EmergencyContactViewModel
+
+@{
+    ViewBag.Title = "Emergency Contact Delete";
+}
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2> Delete Emergency Contact<small>Are you sure you want to delete this?</small></h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                @Html.Partial("_EmergencyContactDetails", Model)
+
+                @using (Html.BeginForm())
+                {
+                    @Html.HiddenFor(m => m.EmergencyContact.PersonnelId)
+                    @Html.HiddenFor(m => m.EmergencyContact.EmergencyContactId)
+                    @Html.AntiForgeryToken()
+
+                    <div class="col-md-6 col-sm-12 col-xs-12 col-md-offset-3">
+                        <div class="form-group">
+                            <div class="pull-left form-actions">
+                                <button type="submit" class="btn btn-success">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                    @*<div class="form-actions no-color">
+                        <input type="submit" value="Delete" class="btn btn-default" /> |
+                    </div>*@
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <a href="@Url.Action("Profile", "Personnel", new { id = Model.EmergencyContact.PersonnelId })" class="btn btn-primary" role="button">
+        <span class="fa fa-chevron-left"></span>&nbsp;Back to profile
+    </a>
+</div>

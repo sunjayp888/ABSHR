@@ -1,0 +1,45 @@
+﻿@using Microsoft.Ajax.Utilities
+
+<div class="dropdown">
+    <button class="btn btn-default btn-md dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">  
+        <span style="height:20px;margin-bottom:5px;margin-top:5px;display: inline-block;vertical-align: middle;"></span>
+        <span id="jobtitlename" >@Model.JobTitleName</span>
+        <span id="jobgradename">@Model.JobGradeName</span>
+        <span class="caret"></span>
+    </button>
+
+    <div class="dropdown-menu divisionbuilding" role="menu" aria-labelledby="dropdownMenu1">
+        <table  class="table table-striped table-bordered table-hover dataTable no-footer" style="background-color:#ffffff;margin-top: 0!important; margin-bottom: 0 !important; ">
+            <thead>
+                <tr>                    
+                    <th>JobTitle</th>
+                    <th>JobGrade</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in Model.JobTitleJobGrades)
+                {
+                    <tr onclick="SetSelectedJobTitleJobGrade('@item.JobTitleId', '@item.JobTitle.Name', '@item.JobGradeId', '@item.JobGrade.Name') ">                        
+                        <td><span>@item.JobTitle.Name</span></td>
+                        <td><span>@item.JobGrade.Name</span></td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+ 
+</div>
+
+<script>
+    function SetSelectedJobTitleJobGrade(JobTitleId, JobTitleName, JobGradeId, JobGradeName) {
+        
+        $("#EmploymentViewModel_SelectedJobTitleId").val(JobTitleId);
+        $("#EmploymentViewModel_SelectedJobGradeId").val(JobGradeId);
+        $("#EmploymentViewModel_Employment_JobTitleId").val(JobTitleId);
+        $("#EmploymentViewModel_Employment_JobGradeId").val(JobGradeId);
+        $("#jobtitlename").text(JobTitleName);
+        $("#jobgradename").text(JobGradeName);
+    }
+</script>

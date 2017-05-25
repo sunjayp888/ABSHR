@@ -1,0 +1,388 @@
+﻿@using HR.Extensions
+@model HR.Models.AbsencePolicyViewModel
+
+@{
+    ViewBag.Title = "Edit Absence Policy";
+}
+
+@*Absence Policy*@
+@Html.AntiForgeryToken()
+@using (Html.BeginForm("Edit", "AbsencePolicy"))
+{
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>
+                        @Model.AbsencePolicy.Name <small>Edit Absence Policy</small>
+                    </h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+
+
+                    <div class="form-horizontal">
+                        @if (ViewContext.ViewData.ModelState.Any(x => x.Key == ""))
+                        {
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12 col-xs-12 col-md-offset-3">
+                                    @Html.ValidationSummary(false, null, new {@class = "row alert alert-error"})
+                                </div>
+                            </div>
+                        }
+                        @Html.HiddenFor(model => model.AbsencePolicy.AbsencePolicyId)
+                        @Html.HiddenFor(model => model.AbsencePolicy.WorkingPatternId)
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.AbsencePolicy.Name, new {@class = "control-label col-md-3 col-sm-3 col-xs-12"})
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                @Html.TextBoxFor(model => model.AbsencePolicy.Name, new {@class = "form-control col-md-7 col-xs-12"})
+                                @Html.ValidationMessageFor(model => model.AbsencePolicy.Name, "", new {@class = "help-block"})
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="x_title">
+                    <h2>Working Pattern</h2>
+                    
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="form-horizontal">
+                        @Html.HiddenFor(model => model.SumOfDuration)
+                        <div class="row @(Model.SumOfDuration != 0 ? "hide-control" : "show-control")" id="workingPatternError">
+                            <div class="col-md-6 col-sm-12 col-xs-12 col-md-offset-3">
+                                <div class="validation-summary-errors row alert alert-error">
+                                    <ul>
+                                        <li>Select Atleast Half Day Working</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        @Html.Partial("_WorkingPattern", Model.WorkingPatternDays, new ViewDataDictionary(ViewData) {TemplateInfo = new TemplateInfo {HtmlFieldPrefix = "WorkingPatternDays"}})
+                    </div>
+                </div>
+                <div class="col-md-10">
+                    <div class="form-group">
+                        <div class="pull-right">
+                            <button type="submit"  id="submit" onclick="return validate();" class="btn btn-success">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+ 
+   
+    @*Absence Types*@
+    <div class="row" ng-controller="AbsencePolicyAbsenceTypeController as model" ng-init="model.initialise(@Model.AbsencePolicy.AbsencePolicyId)">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Absence Types</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="form-horizontal">
+                        <div class="row ng-hide"  ng-cloak  ng-show="model.absenceTypeError" >
+                            <div class="col-md-6 col-sm-12 col-xs-12 col-md-offset-3">
+                                <div class="validation-summary-errors row alert alert-error" id="absenceTypeError">
+                                    <ul>
+                                        <li>Assign Atleast One Absence Type</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("Type", new {@class = "control-label col-md-5 col-sm-5 col-xs-12"})
+                            <input type="hidden" id="absenceTypeCount" ng-value="model.absenceTypeCount"/>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="dropdown">
+                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        <span class="fa fa-list fa-fw"></span>
+                                        <span class="square" ng-style="{'background-color' : '#' + model.ddAbsenceType.Colour.Hex }"></span> <span ng-bind="model.ddAbsenceType.Name"></span>
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                        <li ng-repeat="absenceType in model.ddAbsenceTypes">
+                                            <span class="square" ng-style="{'background-color' : '#' + absenceType.Colour.Hex }"></span> <span><a ng-click="model.changeAbsenceType(absenceType)" ng-bind="absenceType.Name"></a></span>
+                                        </li>
+                                    </ul>
+                                    <button type="button" class="btn btn-success" ng-click="model.assignAbsencePolicyAbsenceType()" ng-disabled="model.assigning">Assign</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-muted font-13 m-b-30">
+                    </p>
+                    <div id="datatable_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                @Html.Partial("Pagination/_pageSize")
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <table wt-responsive-table class="table table-striped table-bordered table-hover dataTable no-footer" role="grid" aria-describedby="datatable-fixed-header_info">
+                                    <thead>
+                                        <tr role="row">
+                                            <th ng-click="model.order('Name')" ng-class="model.orderClass('Name')">Absence Type</th>
+                                            <th ng-click="model.order('Frequency')" ng-class="model.orderClass('Frequency')">Frequency</th>
+                                            <th ng-click="model.order('HasEntitlement')" ng-class="model.orderClass('HasEntitlement')">Has Entitlement</th>
+                                            <th ng-click="model.order('Entitlement')" ng-class="model.orderClass('Entitlement')">Entitlement</th>
+                                            <th ng-click="model.order('MaximumCarryForward')" ng-class="model.orderClass('MaximumCarryForward')">Max Carry Over</th>
+                                            <th ng-click="model.order('IsPaid')" ng-class="model.orderClass('IsPaid')">Is Paid</th>
+                                            <th ng-click="model.order('IsUnplanned')" ng-class="model.orderClass('IsUnplanned')">UnPlanned</th>
+                                            @if (User.IsInAnyRoles("Admin"))
+                                            {
+                                                <th>Actions</th>
+                                            }
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="absenceTypeEntitlement in model.absenceTypeEntitlements" class="odd gradeX" ng-click="$event.originalEvent.ngClickHandled || model.openAbsencePolicyEntitlementForm(absenceTypeEntitlement.AbsencePolicyEntitlementId,absenceTypeEntitlement.AbsenceType.Name)">
+                                            <td><span class="square" ng-style="{'background-color' : '#' + absenceTypeEntitlement.AbsenceType.Colour.Hex }"></span><span ng-bind="absenceTypeEntitlement.AbsenceType.Name"></span></td>
+                                            <td><span ng-bind="absenceTypeEntitlement.Frequency.Name"></span></td>
+                                            <td><span><i class="fa fa-check fa-fw" ng-show="absenceTypeEntitlement.HasEntitlement"></i></span></td>
+                                            <td><span ng-bind="absenceTypeEntitlement.Entitlement"></span></td>
+                                            <td><span ng-bind="absenceTypeEntitlement.MaximumCarryForward"></span></td>
+                                            <td><span><i class="fa fa-check fa-fw" ng-show="absenceTypeEntitlement.IsPaid"></i></span></td>
+                                            <td><span><i class="fa fa-check fa-fw" ng-show="absenceTypeEntitlement.IsUnplanned"></i></span></td>
+
+                                            @if (User.IsInAnyRoles("Admin", "SuperAdmin"))
+                                            {
+                                                <td>
+                                                    <div class="btn-group pull-right">
+                                                        <a class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false" ng-click="$event.originalEvent.ngClickHandled = true; model.isAbsencesAssignedToAbsencePolicyAbsenceType(absenceTypeEntitlement.AbsenceTypeId);">
+                                                            <i class="fa fa-chevron-down"></i>
+                                                        </a>
+                                                        <ul class="dropdown-menu slidedown">
+                                                            <li>
+                                                                <a ng-click="$event.originalEvent.ngClickHandled = true; model.openAbsencePolicyEntitlementForm(absenceTypeEntitlement.AbsencePolicyEntitlementId,absenceTypeEntitlement.AbsenceType.Name)">
+                                                                    Edit
+                                                                </a>
+                                                            </li>
+                                                            <li ng-show="model.loadingActions"><i class="fa fa-circle-o-notch fa-spin fa-1x fa-fw "></i></li>
+                                                            <li ng-hide="model.loadingActions">
+                                                                <a ng-class="model.unassignAbsencePolicyAbsenceTypeClass(absenceTypeEntitlement)"
+                                                                   ng-bootbox-confirm="Are you sure, you want to unassign - {{absenceTypeEntitlement.AbsenceType.Name}}"
+                                                                   ng-bootbox-confirm-action="model.unassignAbsencePolicyAbsenceType(absenceTypeEntitlement);"
+                                                                   ng-bootbox-confirm-action-cancel=""
+                                                                   ng-click="$event.originalEvent.ngClickHandled = true;">
+                                                                    Unassign
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                            }
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        @Html.Partial("Pagination/_pagination")
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="absencePolicyEntitlementModal" ng-hide="model.ShowModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Edit <span ng-bind="model.absenceType"></span></h2>
+
+                    </div>
+                    <div class="modal-body form-horizontal" >
+                        <div class="form-group" id="absencePolicyEntitlementErrorSummary" hidden>
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12 col-xs-12 col-md-offset-3">
+                                    <div class="validation-summary-errors row alert alert-error" data-valmsg-summary="false">
+                                        <ul class="errors">
+                                            <li ng-repeat="error in model.Errors"><span ng-bind="error"></span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="absencePolicyEntitlementModalBody">
+                            @Html.Partial("_AbsencePolicyEntitlement", Model)
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <div class="col-md-6 col-sm-12 col-xs-12 col-md-offset-3">
+                            <div class="form-group">
+                                <div class="pull-right col-md-6">
+                                    <div class="col-md-3">
+                                        <button type="button" ng-click="model.updateAbsencePolicyEntitlement()" id="buttonAbsencePolicyEntitlement" class="btn btn-success">Submit</button>
+                                    </div>
+                                    <div class="pull-right col-md-3">
+                                        <button type="button" id="btnCancel" class="btn btn-success" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*Absence Period*@
+    <div class="row" ng-controller="AbsencePolicyAbsencePeriodController as model" ng-init="model.initialise(@Model.AbsencePolicy.AbsencePolicyId)">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Absence Periods</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="form-horizontal">
+                        <div class="row ng-hide"  ng-cloak   ng-show="model.absencePeriodError">
+                            <div class="col-md-6 col-sm-12 col-xs-12 col-md-offset-3">
+                                <div class="validation-summary-errors row alert alert-error" id="absencePeriodError">
+                                    <ul>
+                                        <li>Assign Atleast One Absence Period</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("Absence Periods", new {@class = "control-label col-md-5 col-sm-5 col-xs-12"})
+                            <input type="hidden" id="absencePeriodCount" ng-value="model.absencePeriodCount" />
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="dropdown">
+                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        <span class="fa fa-calendar fa-fw"></span>
+                                        <span ng-bind="model.absencePeriod.Name"></span>&nbsp;
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                        <li ng-repeat="period in model.ddAbsencePeriod">
+                                            <a ng-click="model.changeAbsencePeriod(period)" ng-bind="period.Name">
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <button type="button" class="btn btn-success" ng-click="model.createAbsencePolicyAbsencePeriod()" ng-disabled="model.assigning">Assign</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-muted font-13 m-b-30">
+                    </p>
+                    <div id="datatable_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                @Html.Partial("Pagination/_pageSize")
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <table wt-responsive-table class="table table-striped table-bordered table-hover dataTable no-footer" role="grid" aria-describedby="datatable-fixed-header_info">
+                                    <thead>
+                                    <tr role="row">
+                                        <th ng-click="model.order('AbsencePeriod.StartDate')" ng-class="model.orderClass('AbsencePeriod.StartDate')">Name</th>
+                                        @if (User.IsInAnyRoles("Admin", "SuperAdmin"))
+                                        {
+                                            <th>Actions</th>
+                                        }
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="absencePeriod in model.absencePeriods" class="odd gradeX">
+                                        <td><span ng-bind="absencePeriod.AbsencePeriod.Name"></span></td>
+                                        @if (User.IsInAnyRoles("Admin", "SuperAdmin"))
+                                        {
+                                            <td>
+                                                <div class="btn-group pull-right">
+                                                    <a class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" ng-click="model.isAbsencesAssignedToAbsencePolicyPeriod(absencePeriod.AbsencePolicyPeriodId)" aria-expanded="false">
+                                                        <i class="fa fa-chevron-down"></i>
+                                                    </a>
+                                                    <ul class="dropdown-menu slidedown">
+                                                        <li ng-show="model.loadingActions"><i class="fa fa-circle-o-notch fa-spin fa-1x fa-fw "></i></li>
+                                                        <li ng-hide="model.loadingActions">
+                                                            <a ng-class="model.unassignAbsencePeriodClass(absencePeriod)" ng-click="model.unassignAbsencePeriod(absencePeriod)">
+                                                                Unassign
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        }
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        @Html.Partial("Pagination/_pagination")
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <a href="@Url.Action("Index")" class="btn btn-primary" role="button">
+            <span class="fa fa-chevron-left"></span>&nbsp;Back to list
+        </a>
+    </div>
+}
+
+@section scripts {
+
+    <script type="text/javascript">
+        jQuery(function () {
+            //for disabling Previous Employment details
+            if ($("#EditPreviousEmployment").val().toLowerCase() === 'false') {
+                $("#previousEmploymentSave").hide();
+                $("input[name='PreviousEmployment.EndDate']").attr("disabled", "disabled");
+            }
+        });
+
+        function workingPatternDayChecked() {
+            var returnValue = false;
+            $('.dataTable input[type=checkbox]:checked').each(function () {
+                var $this = $(this);
+                var valu = $this.val();
+                if (valu) {
+                    returnValue= true;
+                }
+            });
+            return returnValue;
+        }
+
+        function validate() {
+            var returnValue = workingPatternDayChecked();
+            if (returnValue) {
+                $('#workingPatternError').removeClass("show-control");
+                $('#workingPatternError').addClass("hide-control");
+            } else {
+                $('#workingPatternError').addClass("show-control");
+                $('#workingPatternError').removeClass("hide-control");
+            }
+            var absenceTypeCount = $('#absenceTypeCount').val();
+            var absencePeriodCount = $('#absencePeriodCount').val();
+            if (returnValue && absenceTypeCount > 0 && absencePeriodCount > 0) {
+                return true;
+            } else {
+                //$("#submit").prop("disabled", true);
+                return false;
+            }
+          
+        }
+
+    </script>
+}

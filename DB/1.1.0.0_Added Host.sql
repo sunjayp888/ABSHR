@@ -1,0 +1,13 @@
+USE HR
+
+GO
+
+IF NOT EXISTS(SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%Host%')
+BEGIN
+	CREATE TABLE Host
+	(
+		HostId	int NOT NULL PRIMARY KEY identity(1,1)
+		,HostName	varchar(100) NOT NULL
+		,OrganisationId int FOREIGN KEY REFERENCES Organisation(OrganisationId)
+	)
+END

@@ -1,0 +1,141 @@
+﻿@model HR.Models.HomeViewModel
+@{
+    ViewBag.Title = "Home";
+}
+
+<div class="">
+    <div class="row top_tiles" ng-controller="TileController as model">
+        <a ng-click="model.scroll('AbsenceForApproval')" style="cursor: pointer">
+            <div class="animated flipInY col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="tile-stats">
+                    <div class="icon"><i class="fa fa-calendar-check-o"></i></div>
+                    <div class="count">@Model.AbsencesRequiringApproval</div>
+                    <h3>Absence Request</h3>
+                    <p>For Approval.</p>
+                </div>
+            </div>
+        </a>
+        <div class="animated flipInY col-lg-6 col-md-6 col-sm-12 col-xs-12">
+
+            <a ng-click="model.scroll('OvertimeForApproval')" style="cursor: pointer">
+                <div class="tile-stats">
+                    <div class="icon"><i class="fa fa-calendar-check-o"></i></div>
+                    <div class="count">@Model.OvertimeRequiringApproval</div>
+                    <h3>Overtime Request</h3>
+                    <p>For Approval.</p>
+                </div>
+            </a>
+        </div>
+        @*<div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="tile-stats">
+                <div class="icon"><i class="fa fa-calendar-check-o"></i></div>
+                <div class="count">@Model.AbsencesRequiringApproval</div>
+                <h3>Absence Request</h3>
+                <p>For Approval.</p>
+            </div>
+        </div>
+        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="tile-stats">
+                <div class="icon"><i class="fa fa-tachometer"></i></div>
+                <div class="count">3</div>
+                <h3>Bradford Factor</h3>
+                <p>Warnings.</p>
+            </div>
+        </div>
+        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="tile-stats">
+                <div class="icon"><i class="fa fa-square-o"></i></div>
+                <div class="count">1</div>
+                <h3>Required</h3>
+                <p>Return to work form required.</p>
+            </div>
+        </div>
+        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="tile-stats">
+                <div class="icon"><i class="fa fa-check-square-o"></i></div>
+                <div class="count">2</div>
+                <h3>Completed</h3>
+                <p>Return to work completed.</p>
+            </div>
+        </div>*@
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Absence Planner <small></small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="row" ng-controller="AbsenceScheduleController as model" ng-init="model.initialise(@Model.PersonnelId,@Model.CompanyIdsArray,@Model.DepartmentIdsArray,@Model.DivisionIdsArray)">
+                        <div class="col-md-10 col-sm-12 col-xs-12">
+                            @Html.Partial("_Filter")
+                            @Html.Partial("_AbsenceSchedule")
+                        </div>
+                        <div class="col-md-2 col-sm-12 col-xs-12">
+                            <h4>Legend</h4>
+                            <div class="xs-mt-15">Colour by:</div>
+                            @Html.Partial("_ColourLegend")
+                            <div class="xs-mt-15">Absence Types:</div>
+                            <daily-schedule-legend items="model.schedule.types"></daily-schedule-legend>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="AbsenceForApproval">
+        <div class="col-md-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Absence Approval <small></small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="row" ng-controller="AbsenceForApprovalController as model" ng-init="model.initialise();">
+
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            @Html.Partial("_AbsenceForApprovals", Model)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="OvertimeForApproval">
+        <div class="col-md-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Overtime Approval <small></small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="row" ng-controller="OvertimeForApprovalController as model" ng-init="model.initialise();">
+
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            @Html.Partial("_OvertimeForApprovals", Model)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

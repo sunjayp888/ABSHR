@@ -1,0 +1,41 @@
+﻿
+@model HR.Models.PersonnelAbsenceEntitlementViewModel
+
+<div class="form-control-required-example"> = Required</div>
+@Html.HiddenFor(model => Model.PersonnelAbsenceEntitlement.PersonnelAbsenceEntitlementId)
+@Html.HiddenFor(model => Model.PersonnelAbsenceEntitlement.PersonnelId)
+<div class="form-group">
+    @Html.LabelFor(model => model.PersonnelAbsenceEntitlement.Entitlement, new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        @Html.TextBoxFor(model => model.PersonnelAbsenceEntitlement.Entitlement, new { @type = "number", @class = "form-control col-md-7 col-xs-12" })
+        @Html.ValidationMessageFor(model => model.PersonnelAbsenceEntitlement.Entitlement, "", new { @class = "help-block" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.PersonnelAbsenceEntitlement.CarriedOver, new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        @Html.TextBoxFor(model => model.PersonnelAbsenceEntitlement.CarriedOver, new { @type = "number", @class = "form-control col-md-7 col-xs-12" })
+        @Html.ValidationMessageFor(model => model.PersonnelAbsenceEntitlement.CarriedOver, "", new { @class = "help-block" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.PersonnelAbsenceEntitlement.Used, new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        @Html.TextBoxFor(model => model.PersonnelAbsenceEntitlement.Used, new { @type = "number", @class = "form-control col-md-7 col-xs-12" })
+        @Html.ValidationMessageFor(model => model.PersonnelAbsenceEntitlement.Used, "", new { @class = "help-block" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.PersonnelAbsenceEntitlement.Remaining, new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        @Html.TextBoxFor(model => model.PersonnelAbsenceEntitlement.Remaining, new { @type = "number", @class = "form-control col-md-7 col-xs-12" })
+        @Html.ValidationMessageFor(model => model.PersonnelAbsenceEntitlement.Remaining, "", new { @class = "help-block" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.PersonnelAbsenceEntitlement.MaximumCarryForward, new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        @Html.TextBoxFor(model => model.PersonnelAbsenceEntitlement.MaximumCarryForward, new { @type = "number", @class = "form-control col-md-7 col-xs-12" })
+        @Html.ValidationMessageFor(model => model.PersonnelAbsenceEntitlement.MaximumCarryForward, "", new { @class = "help-block" })
+    </div>
+</div>

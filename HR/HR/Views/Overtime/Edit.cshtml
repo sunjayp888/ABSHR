@@ -1,0 +1,127 @@
+﻿@using HR.Extensions
+@model HR.Models.OvertimeViewModel
+@using HR.Entity.Dto
+@{
+    ViewBag.Title = "Edit Overtime";
+}
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+
+
+        @if (Model.CanApprovedOvertime && Model.Overtime.ApprovalStateId != (int)ApprovalStates.Approved && Model.Overtime.ApprovalStateId != (int)ApprovalStates.Declined)
+        {
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Quick Action<small></small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="" ng-controller="OvertimeController as model ">
+                        <a class="btn btn-success btn-lg" ng-bootbox-confirm="Are you sure you want to approve this overtime?" ng-bootbox-confirm-action="model.approveOvertime(@Model.PersonnelId, @Model.Overtime.OvertimeId)" ng-bootbox-confirm-action-cancel="">
+                            <i class="fa fa-check m-right-xs">
+                            </i>&nbsp;Approve
+                        </a>
+                        <a class="btn btn-danger btn-lg" ng-bootbox-confirm="Are you sure you want to decline this overtime?" ng-bootbox-confirm-action="model.declineOvertime(@Model.PersonnelId, @Model.Overtime.OvertimeId)" ng-bootbox-confirm-action-cancel="">
+                            <i class="fa fa-close m-right-xs">
+                            </i>&nbsp;Decline
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>
+                    Overtime - @Model.Overtime.Personnel.Fullname
+                </h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-horizontal">
+                        @if (ViewContext.ViewData.ModelState.Any(x => x.Key == ""))
+                        {
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12 col-xs-12 col-md-offset-3">
+                                    @Html.ValidationSummary(false, null, new { @class = "row alert alert-error" })
+                                </div>
+                            </div>
+                        }
+                        @*<div class="form-group">
+                            @Html.LabelFor(model => model.Overtime.ApprovalStateId, new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <span class="form-control col-md-7 col-xs-12">
+                                    <i class="fa @Model.Overtime.ApprovalState.ApprovalStateIcon fa-fw" alt="@Model.Overtime.ApprovalState.Name"></i>
+                                    @Html.DisplayTextFor(model => model.Overtime.ApprovalState.Name)
+                                    @Html.DisplayTextFor(model => model.Overtime.UpdatedDateUtc)
+                                </span>
+                            </div>
+                        </div>*@
+
+                            <div class="text-center">
+                                <h1>
+                                    <i class="fa @Model.Overtime.ApprovalState.ApprovalStateIcon fa-fw" alt="@Model.Overtime.ApprovalState.Name"></i>
+                                    State: @Html.DisplayTextFor(model => model.Overtime.ApprovalState.Name)
+                                </h1>
+                                <div class="clearfix"></div>
+                            </div>
+                        @Html.HiddenFor(model => Model.Overtime.OvertimeId)
+                        @Html.Partial("_Overtime", Model)
+
+                        @if (Model.Permissions.CanEditOvertime && Model.Overtime.ApprovalStateId == (int)ApprovalStates.Requested)
+                        {
+                            <div class="col-md-6 col-sm-12 col-xs-12 col-md-offset-3">
+                                <div class="form-group">
+                                    <div class="pull-right">
+                                        <button type="submit" class="btn btn-success">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <a href="@Url.Action("Profile","Personnel",new {id=@Model.Overtime.PersonnelId})" class="btn btn-primary" role="button">
+        <span class="fa fa-chevron-left"></span>&nbsp;Back to Profile
+    </a>
+</div>
+
+@section scripts {
+    <script>
+        jQuery(function () {
+            jQuery(".date").daterangepicker({
+                autoApply: true,
+                singleDatePicker: true,
+                showDropdowns: true,
+                showCustomRangeLabel: false,
+                opens: 'left',
+                startDate: '@Model.Overtime.Date.ToString("dd/MMMM/yyyy")',
+                locale: {
+                    format: 'DD MMMM YYYY'
+                }
+            });
+            jQuery("#sidebar-menu li").removeClass("active");
+            jQuery("#sidebar-menu ul li ul").hide();
+            jQuery("#sidebar-menu #settings").addClass("active");
+            jQuery("#settings ul").show();
+            jQuery("#personnel").addClass("current-page");
+        });
+    </script>
+}

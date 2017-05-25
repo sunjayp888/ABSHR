@@ -1,0 +1,88 @@
+﻿@model HR.Models.HomeViewModel
+
+<div id="datatable_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+    <div class="row">
+        <div class="col-xs-12">
+            @Html.Partial("Pagination/_pageSize")
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <table wt-responsive-table class="table table-striped table-bordered table-hover dataTable no-footer" role="grid" aria-describedby="datatable-fixed-header_info">
+                <thead>
+                    <tr role="row">
+                        <th ng-click="model.order('OvertimeId')" ng-class="model.orderClass('OvertimeId')">Overtime Id</th>
+                        <th ng-click="model.order('Date')" ng-class="model.orderClass('Date')">Date</th>
+                        <th ng-click="model.order('Forenames')" ng-class="model.orderClass('Forenames')">Forenames</th>
+                        <th ng-click="model.order('Surname')" ng-class="model.orderClass('Surname')">Surname</th>
+                        <th ng-click="model.order('OvertimePreference')" ng-class="model.orderClass('OvertimePreference')">Overtime Preference</th>
+                        <th ng-click="model.order('Hours')" ng-class="model.orderClass('Hours')">Hours</th>
+                        <th ng-click="model.order('Reason')" ng-class="model.orderClass('Reason')">Reason</th>
+                        <th ng-click="model.order('Comment')" ng-class="model.orderClass('Comment')">Comment</th>
+                        <th ng-click="model.order('ApprovalState')" ng-class="model.orderClass('ApprovalState')">ApprovalState</th>
+                        <th ng-click="model.order('LevelNumber')" ng-class="model.orderClass('LevelNumber')">Level Number</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="overtimeForApproval in model.overtimeForApprovals" class="odd gradeX" ng-click="$event.originalEvent.ngClickHandled || model.editOvertime(overtimeForApproval.PersonnelId, overtimeForApproval.OvertimeId)">
+                        <td><span ng-bind="overtimeForApproval.OvertimeId"></span></td>
+                        <td><span ng-bind-template="{{ overtimeForApproval.Date | date:'dd MMMM yyyy'}}"></span></td>
+                        <td><span ng-bind="overtimeForApproval.Forenames"></span></td>
+                        <td><span ng-bind="overtimeForApproval.Surname"></span></td>
+                        <td><span ng-bind="overtimeForApproval.OvertimePreference"></span></td>
+                        <td><span ng-bind="overtimeForApproval.Hours"></span></td>
+                        <td><span ng-bind="overtimeForApproval.Reason"></span></td>
+                        <td><span ng-bind="overtimeForApproval.Comment"></span></td>
+                        <td><span ng-bind="overtimeForApproval.ApprovalState"></span></td>
+                        <td><span ng-bind="overtimeForApproval.LevelNumber"></span></td>
+                        <td>
+                            <div class="btn-group pull-right">
+                                <a class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false" ng-click="$event.originalEvent.ngClickHandled = true">
+                                    <i class="fa fa-chevron-down"></i>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a style="cursor: pointer;" ng-bootbox-confirm="Are you sure you want to approve this overtime - {{overtimeForApproval.Reason}}"
+                                            ng-bootbox-confirm-action="model.approveOvertime(overtimeForApproval)"
+                                            ng-bootbox-confirm-action-cancel="" ng-click="$event.originalEvent.ngClickHandled = true;">
+                                            Approve
+                                        </a>
+                                    </li>
+                                    @if (Model.Permissions.IsAdmin)
+                                    {
+                                        <li>
+                                            <a style="cursor: pointer;" ng-bootbox-confirm="Are you sure you want to cancel this overtime - {{overtimeForApproval.Reason}}"
+                                               ng-bootbox-confirm-action="model.deleteOvertime(overtimeForApproval.OvertimeId)"
+                                               ng-bootbox-confirm-action-cancel="" ng-click="$event.originalEvent.ngClickHandled = true;">
+                                                Cancel
+                                            </a>
+                                        </li>
+                                    }
+                                    <li>
+                                        <a style="cursor: pointer;" ng-bootbox-confirm="Are you sure you want to decline this overtime - {{overtimeForApproval.Reason}}"
+                                           ng-bootbox-confirm-action="model.declineOvertime(overtimeForApproval)"
+                                           ng-bootbox-confirm-action-cancel="" ng-click="$event.originalEvent.ngClickHandled = true;">
+                                            Decline
+                                        </a>
+                                    </li>
+                                    <li class="Delete">
+                                        <a style="cursor: pointer;" ng-href="/Overtime/Edit/{{overtimeForApproval.PersonnelId}}/{{overtimeForApproval.OvertimeId}}">
+                                            View Overtime Request
+                                        </a>
+                                    </li>
+                                    <li class="Delete">
+                                        <a style="cursor: pointer;" ng-href="/Personnel/Profile/{{overtimeForApproval.PersonnelId}}">
+                                            View Profile
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    @Html.Partial("Pagination/_pagination")
+</div>

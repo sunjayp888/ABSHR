@@ -1,0 +1,31 @@
+﻿@model HR.Models.PersonnelProfileViewModel
+
+@{int counter = 0;}
+@foreach (var approvalEntityTypeAssignment in Model.ApprovalEntityTypeAssignments)
+{
+
+    <div class="form-group">
+        @Html.Label(approvalEntityTypeAssignment.Name + " Approver", new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+        
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <select class="form-control col-md-7 col-xs-12" name="ApprovalEntityTypeAssignments[@counter].ApprovalModelId" @if (!Model.Permissions.CanEditApprover) { <text> disabled </text> }>
+                @approvalEntityTypeAssignment.ApprovalModelId
+                <option value="0" selected>None Approver</option>
+                @foreach (var approvalModel in Model.ApprovalModels)
+                {
+                    if (@approvalEntityTypeAssignment.ApprovalModelId == @approvalModel.ApprovalModelId)
+                    {
+                        <option value="@approvalModel.ApprovalModelId" selected>@approvalModel.Name Approver</option>
+                    }
+                    else
+                    {
+                        <option value="@approvalModel.ApprovalModelId">@approvalModel.Name Approver</option>
+                    }
+                }
+            </select>
+        </div>
+    </div>
+    <input type="hidden" name="ApprovalEntityTypeAssignments[@counter].ApprovalEntityId" value="@approvalEntityTypeAssignment.ApprovalEntityId" />
+    <input type="hidden" name="ApprovalEntityTypeAssignments[@counter].PersonnelApprovalModelId" value="@approvalEntityTypeAssignment.PersonnelApprovalModelId" />
+    { counter++; }
+}

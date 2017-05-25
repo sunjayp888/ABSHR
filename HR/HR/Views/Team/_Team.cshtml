@@ -1,0 +1,19 @@
+﻿@model HR.Models.TeamViewModel
+
+<div class="form-control-required-example"> = Required</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Team.Name, new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        @Html.TextBoxFor(model => model.Team.Name, new { @class = "form-control col-md-7 col-xs-12" })
+        @Html.ValidationMessageFor(model => model.Team.Name, "", new { @class = "help-block" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.Team.ColourId, new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        <input id="ColourId" type="hidden" name="Team.ColourId" value="@Model.Team.ColourId">
+        @*@Html.Partial("_Colour", Model.ColoursList, new ViewDataDictionary { { "ColourHex", Model.Team.Hex } })*@
+        @Html.Partial("_Colour", Model.ColoursList, new ViewDataDictionary { { "ColourHex", @Model.Team.Hex == null || @Model.Team.Hex == "" ? @Model.ColoursList.FirstOrDefault().Hex : @Model.Team.Hex } })
+    </div>
+</div>

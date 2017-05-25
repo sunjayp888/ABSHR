@@ -1,0 +1,47 @@
+﻿@using Microsoft.Ajax.Utilities
+
+<div class="dropdown" id="divisionBuildingDiv">
+    <button class="btn btn-default btn-md dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        <span id="companyColour" class="square" style="background-color: #@Model.Colour"></span>
+        <span id="companyName">@Model.CompanyName</span>
+        <span id="buildingName">@Model.BuildingName</span>
+        <span class="caret"></span>
+    </button>
+
+    <div class="dropdown-menu divisionbuilding" role="menu" aria-labelledby="dropdownMenu1">
+        <table  class="table table-striped table-bordered table-hover dataTable no-footer" style="background-color:#ffffff;margin-top: 0!important; margin-bottom: 0 !important; ">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Company</th>
+                    <th>Building</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in Model.EmploymentCompanyBuildinglist)
+                {
+                    <tr onclick="SetSelectedCompanyBuilding('@item.CompanyId', '@item.Company.Name', '@item.BuildingId', '@item.Building.Name', '@item.Company.Colour.Hex') ">
+                        <td><span class="square" style="background-color: #@item.Company.Hex"></span></td>
+                        <td><span>@item.Company.Name</span></td>
+                        <td><span>@item.Building.Name</span></td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+ 
+</div>
+
+<script>
+    function SetSelectedCompanyBuilding(companyId,companyName,buildingId,buildingName,companyHex) {
+        $("#companyColour").css({ 'background-color': '#' + companyHex });
+        $("#EmploymentViewModel_SelectedCompanyId").val(companyId);
+        $("#EmploymentViewModel_SelectedBuildingId").val(buildingId);
+        $("#EmploymentViewModel_Employment_BuildingId").val(buildingId);
+        $("#EmploymentViewModel_Employment_CompanyId").val(companyId);
+        $("#companyName").text(companyName);
+        $("#buildingName").text(buildingName);
+    }
+</script>

@@ -1,0 +1,99 @@
+﻿@using System.Linq
+@model HR.Models.EmploymentViewModel
+@{
+    ViewBag.Title = "Edit Employment";
+}
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>@Model.Employment.Personnel.Fullname<small>Edit employment</small>
+                </h2>
+                @*<input id="absencePolicyPersonnelEmploymentHasAbsences" type="hidden" name="absencePolicyPersonnelEmploymentHasAbsences" value='@ViewData["absencePolicyPersonnelEmploymentHasAbsences"].ToString()'>*@
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-horizontal">
+                        @if (ViewContext.ViewData.ModelState.Any(x => x.Key == ""))
+                        {
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12 col-xs-12 col-md-offset-3">
+                                    @Html.ValidationSummary(false, null, new { @class = "row alert alert-error" })
+                                </div>
+                            </div>
+                        }
+                        <div class="form-control-required-example"> = Required</div>
+                        
+                            @Html.Partial("_Employment", Model, new ViewDataDictionary(ViewData) { TemplateInfo = new TemplateInfo { HtmlFieldPrefix = "EmploymentViewModel" } })
+                            <div class="x_title">
+                                <h2>
+                                    Working Pattern <small></small>
+                                </h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div id="workingDays" class="@(Model.AbsencePolicyHasAbsence?"disable-table":"")">
+                                @if (Model.WorkingPatternDays != null)
+                                {
+                                    @Html.Partial("_WorkingPattern", Model.WorkingPatternDays, new ViewDataDictionary(ViewData) { TemplateInfo = new TemplateInfo { HtmlFieldPrefix = "EmploymentViewModel.WorkingPatternDays" } })
+                                }
+                            </div>
+                        
+                            <div class="col-md-6 col-sm-12 col-xs-12 col-md-offset-3">
+                                <div class="form-group">
+                                    <div class="pull-right">
+                                    <button type="submit" id="submit" class="btn btn-success">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        @*<div class="modal fade" id="modal">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h2>Confirmation</h2>
+                                        </div>
+                                        <div class="modal-body">
+                                            Are you sure, you want to delete working pattern for this employment?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" id="btnOK" class="btn btn-success" style="margin-bottom: 0">Ok</button>
+                                            <button type="button" id="btnCancel" class="btn btn-success" data-dismiss="modal">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                       </div>*@
+                        </div>
+                    }
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div>
+        <a href="@Url.Action("Profile", "Personnel", new { id = Model.Employment.PersonnelId })" class="btn btn-primary" role="button">
+            <span class="fa fa-chevron-left"></span>&nbsp;Back to Profile
+        </a>
+    </div>
+
+    @section scripts {
+        <script src="~/Scripts/App/EmploymentWorkingPattern.js"></script>
+        <script>
+
+            jQuery(function () {
+                $(".disable-table").click(function () {
+                    return false;
+                });
+
+                //$("#divisionBuildingDiv").addClass('disable-control');
+                //var result = $('#absencePolicyPersonnelEmploymentHasAbsences').val();
+                //if (result == "True") {
+                //    $("#EmploymentViewModel_Employment_AbsencePolicyId").addClass('disable-control');
+                //    $("#EmploymentViewModel_Employment_StartDate").addClass('disable-control');
+                //    $("#workingDays .table").addClass('disable-control');
+               
+            });
+        </script>
+    }

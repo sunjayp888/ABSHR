@@ -1,0 +1,86 @@
+﻿@using HR.Extensions
+@{
+    ViewBag.Title = "Buildings";
+}
+<div class="" ng-controller="BuildingController as model">
+    <div class="page-title">
+        <div class="title_left">
+            <h3>Buildings <small></small></h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <a class="btn btn-success btn-lg" href="@Url.Action("Create", "Building")">
+                Create
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Buildings <small></small></h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <p class="text-muted font-13 m-b-30">
+                    </p>
+                    <div id="datatable_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                                @Html.Partial("Pagination/_pageSize")
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <table wt-responsive-table class="table table-striped table-bordered table-hover dataTable no-footer" role="grid" aria-describedby="datatable-fixed-header_info">
+                                    <thead>
+                                        <tr role="row">
+                                            <th ng-click="model.order('Name')" ng-class="model.orderClass('Name')">Name</th>
+                                            <th ng-click="model.order('Site.Name')" ng-class="model.orderClass('Site.Name')">Site Name</th>
+                                            @if (User.IsInAnyRoles("Admin"))
+                                            {
+                                                <th>Actions</th>
+                                            }
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="building in model.buildings" class="odd gradeX" ng-click="$event.originalEvent.ngClickHandled || model.editBuilding(building.BuildingId)">
+                                            <td><span ng-bind="building.Name"></span></td>
+                                            <td><span ng-bind="building.Site.Name"></span></td>
+                                            @if (User.IsInAnyRoles("Admin"))
+                                            {
+                                                <td>
+                                                    <div class="btn-group pull-right">
+                                                        <a class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false" ng-click="$event.originalEvent.ngClickHandled = true; model.isBuildingMappingExists(building.BuildingId);">
+                                                            <i class="fa fa-chevron-down"></i>
+                                                        </a>
+                                                        <ul class="dropdown-menu">
+                                                            <li>
+                                                                <a style="cursor: pointer;" ng-href="/Building/Edit/{{building.BuildingId}}">
+                                                                    Edit
+                                                                </a>
+                                                            </li>
+                                                            <li ng-show="model.loadingActions"><i class="fa fa-circle-o-notch fa-spin fa-1x fa-fw "></i></li>
+                                                            <li class="Delete" ng-hide="model.IsBuildingMapped">
+                                                                <a style="cursor: pointer;" ng-bootbox-confirm="Are you sure you want to delete this building - {{building.Name}}" ng-bootbox-confirm-action="model.deleteBuilding(building.BuildingId)" ng-bootbox-confirm-action-cancel="" ng-click="$event.originalEvent.ngClickHandled = true;">
+                                                                    Delete
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                            }
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        @Html.Partial("Pagination/_pagination")
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

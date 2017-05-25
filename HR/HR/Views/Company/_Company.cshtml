@@ -1,0 +1,16 @@
+﻿@model HR.Models.CompanyViewModel
+<div class="form-control-required-example"> = Required</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.Company.Name, new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        @Html.TextBoxFor(model => model.Company.Name, new { @class = "form-control col-md-7 col-xs-12" })
+        @Html.ValidationMessageFor(model => model.Company.Name, "", new { @class = "help-block" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.Company.ColourId, new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+    <div class="col-xs-1">
+        <input id="ColourId" type="hidden" name="Company.ColourId" value="@Model.Company.ColourId">
+        @Html.Partial("_Colour", Model.ColoursList, new ViewDataDictionary { { "ColourHex", @Model.Company.Hex==null || @Model.Company.Hex=="" ? @Model.ColoursList.FirstOrDefault().Hex : @Model.Company.Hex } })
+    </div>
+</div>

@@ -1,0 +1,18 @@
+﻿@model HR.Models.AbsencePeriodViewModel
+
+<div class="form-control-required-example"> = Required</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.AbsencePeriod.StartDate, new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+    <div class="col-md-6 col-sm-6 col-xs-12 begin">
+        @Html.TextBoxFor(model => model.AbsencePeriod.StartDate, "{0:dd MMMM yyyy}", new { @class = "form-control col-md-7 col-xs-12 date" })
+        @Html.ValidationMessageFor(model => model.AbsencePeriod.StartDate, "", new { @class = "help-block" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.AbsencePeriod.EndDate, new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+    <div class="col-md-6 col-sm-6 col-xs-12 end">
+        @Html.TextBoxFor(model => model.AbsencePeriod.EndDate, "{0:dd MMMM yyyy}", new { @readonly = "readonly", @class = "form-control col-md-7 col-xs-12 date" })
+        @Html.ValidationMessageFor(model => model.AbsencePeriod.EndDate, "", new { @class = "help-block" })
+    </div>
+</div>
