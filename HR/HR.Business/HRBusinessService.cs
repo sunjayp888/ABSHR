@@ -1,5 +1,5 @@
-﻿using DocumentService.API.RESTClient.Interfaces;
-using DocumentService.API.RESTClient.Models;
+﻿//using DocumentService.API.RESTClient.Interfaces;
+//using DocumentService.API.RESTClient.Models;
 using HR.Business.EmailServiceReference;
 using HR.Business.Extensions;
 using HR.Business.Interfaces;
@@ -29,7 +29,7 @@ namespace HR.Business
         private ICacheProvider _cacheProvider;
         private ITemplateService _templateService;
         private Interfaces.IEmailService _emailService;
-        private IDocumentServiceRestClient _documentServiceAPI;
+     //   private IDocumentServiceRestClient _documentServiceAPI;
         private enum ShowColour { Company, Department, Team };
         private const string OrganisationCacheKey = "Organisations";
         private const string OrganisationEmploymentsTreeKey = "OrganisationEmploymentsTree";
@@ -45,13 +45,13 @@ namespace HR.Business
         readonly string JobTitleDocumentKey = "JobTitleDocuments";
         #endregion
 
-        public HRBusinessService(IHRDataService hrDataService, ICacheProvider cacheProvider, ITemplateService templateService, Interfaces.IEmailService emailService, IDocumentServiceRestClient documentServiceAPI)
+        public HRBusinessService(IHRDataService hrDataService, ICacheProvider cacheProvider, ITemplateService templateService, Interfaces.IEmailService emailService)//, IDocumentServiceRestClient documentServiceAPI)
         {
             _hrDataService = hrDataService;
             _cacheProvider = cacheProvider;
             _templateService = templateService;
             _emailService = emailService;
-            _documentServiceAPI = documentServiceAPI;
+       //     _documentServiceAPI = documentServiceAPI;
         }
 
         private void SendAbsenceStatusMessage(Absence absence)
@@ -89,14 +89,14 @@ namespace HR.Business
                 LinkText = "Click here to view absence."
             };
 
-            var emailBody = _templateService.CreateText(JsonConvert.SerializeObject(absenceStatusMessage), AbsenceStatusTemplateKey);
+            //var emailBody = _templateService.CreateText(JsonConvert.SerializeObject(absenceStatusMessage), AbsenceStatusTemplateKey);
 
             var emailData = new EmailData
             {
                 FromAddress = ConfigHelper.EmailDefaultFromAddress,
                 ToAddressList = new List<string> { personnelNode.Value.Personnel.Email },
                 Subject = string.Format("Absence {0}", status),
-                Body = emailBody,
+                Body = "Testing",
                 IsHtml = true
             };
 
@@ -139,14 +139,14 @@ namespace HR.Business
                 Reason = overtime.Reason
             };
 
-            var emailBody = _templateService.CreateText(JsonConvert.SerializeObject(overtimeStatusMessage), OvertimeStatusTemplateKey);
+            //var emailBody = _templateService.CreateText(JsonConvert.SerializeObject(overtimeStatusMessage), OvertimeStatusTemplateKey);
 
             var emailData = new EmailData
             {
                 FromAddress = ConfigHelper.EmailDefaultFromAddress,
                 ToAddressList = new List<string> { personnelNode.Value.Personnel.Email },
                 Subject = string.Format("Overtime {0}", status),
-                Body = emailBody,
+                Body = "Testing",
                 IsHtml = true
             };
 
@@ -555,26 +555,26 @@ namespace HR.Business
         public void CreateJobTitleDocument(int organisationId, JobTitleDocument jobTitleDocument, string createdBy)
         {
             var organisation = RetrieveOrganisation(organisationId);
-            _documentServiceAPI.CreateDocument(
-                new Document
-                {
-                    Product = organisation.Name,
-                    Category = JobTitleDocumentCategory,
-                    Content = jobTitleDocument.DocumentBytes,
-                    Description = jobTitleDocument.Name,
-                    FileName = jobTitleDocument.Attachment.FileName.Split('\\').Last(), //Internet explorer includes the filepath which causes the issue
-                    PayrollId = jobTitleDocument.JobTitleId.ToString(),
-                    EmployeeName = jobTitleDocument.Name,
-                    CreatedBy = createdBy,
-                    DocumentAttribute = new List<DocumentAttribute>
-                    {
-                        new DocumentAttribute
-                        {
-                            Key = JobTitleDocumentKey,
-                            Value = jobTitleDocument.JobTitleId.ToString()
-                        }
-                    }
-                });
+            //_documentServiceAPI.CreateDocument(
+            //    new Document
+            //    {
+            //        Product = organisation.Name,
+            //        Category = JobTitleDocumentCategory,
+            //        Content = jobTitleDocument.DocumentBytes,
+            //        Description = jobTitleDocument.Name,
+            //        FileName = jobTitleDocument.Attachment.FileName.Split('\\').Last(), //Internet explorer includes the filepath which causes the issue
+            //        PayrollId = jobTitleDocument.JobTitleId.ToString(),
+            //        EmployeeName = jobTitleDocument.Name,
+            //        CreatedBy = createdBy,
+            //        DocumentAttribute = new List<DocumentAttribute>
+            //        {
+            //            new DocumentAttribute
+            //            {
+            //                Key = JobTitleDocumentKey,
+            //                Value = jobTitleDocument.JobTitleId.ToString()
+            //            }
+            //        }
+            //    });
         }
 
         public Personnel CreatePersonnel(int organisationId, Personnel personnel, Employment employment, bool overrideDefaultWorkingPattern, IEnumerable<WorkingPatternDay> workingPatternDays)
@@ -801,33 +801,33 @@ namespace HR.Business
         {
             var personnel = _hrDataService.RetrievePersonnel(organisationId, personnelId, x => true);
             var organisation = RetrieveOrganisation(organisationId);
-            var document = RetrieveDocumentPhoto(organisationId, personnelId);
+            //var document = RetrieveDocumentPhoto(organisationId, personnelId);
 
-            if (document != null)
-            {
-                DeleteDocument(document.DocumentGuid);
-            }
+            //if (document != null)
+            //{
+            //    DeleteDocument(document.DocumentGuid);
+            //}
 
-            _documentServiceAPI.CreateDocument(
-                        new Document
-                        {
-                            Product = organisation.Name,
-                            Category = PersonnelProfileCategory,
-                            Content = photo,
-                            Description = "Profile Picture",
-                            FileName = personnel.Fullname + ".jpg",
-                            PayrollId = personnelId.ToString(),
-                            EmployeeName = personnel.Fullname,
-                            CreatedBy = personnelId.ToString(),
-                            DocumentAttribute = new List<DocumentAttribute>
-                            {
-                                new DocumentAttribute
-                                {
-                                    Key = PersonnelPhotoKey,
-                                    Value = personnelId.ToString()
-                                }
-                            }
-                        });
+            //_documentServiceAPI.CreateDocument(
+            //            new Document
+            //            {
+            //                Product = organisation.Name,
+            //                Category = PersonnelProfileCategory,
+            //                Content = photo,
+            //                Description = "Profile Picture",
+            //                FileName = personnel.Fullname + ".jpg",
+            //                PayrollId = personnelId.ToString(),
+            //                EmployeeName = personnel.Fullname,
+            //                CreatedBy = personnelId.ToString(),
+            //                DocumentAttribute = new List<DocumentAttribute>
+            //                {
+            //                    new DocumentAttribute
+            //                    {
+            //                        Key = PersonnelPhotoKey,
+            //                        Value = personnelId.ToString()
+            //                    }
+            //                }
+            //            });
 
             string cacheKey = PersonnelPhotoKey + personnelId;
             //remove cache if there is existing photo
@@ -1858,21 +1858,21 @@ namespace HR.Business
             return departmentFilter;
         }
 
-        private Document RetrieveDocumentPhoto(int organisationId, int personnelId)
+        //private Document RetrieveDocumentPhoto(int organisationId, int personnelId)
 
-        {
-            var organisation = RetrieveOrganisation(organisationId);
-            var documentPhoto = _documentServiceAPI.RetrieveDocuments(organisation.Name, PersonnelProfileCategory,
-                                new DocumentAttribute
-                                {
-                                    Key = PersonnelPhotoKey,
-                                    Value = personnelId.ToString()
-                                });
-            if (documentPhoto == null)
-                return null;
+        //{
+        //    var organisation = RetrieveOrganisation(organisationId);
+        //    var documentPhoto = _documentServiceAPI.RetrieveDocuments(organisation.Name, PersonnelProfileCategory,
+        //                        new DocumentAttribute
+        //                        {
+        //                            Key = PersonnelPhotoKey,
+        //                            Value = personnelId.ToString()
+        //                        });
+        //    if (documentPhoto == null)
+        //        return null;
 
-            return documentPhoto.FirstOrDefault();
-        }
+        //    return documentPhoto.FirstOrDefault();
+        //}
 
         public string RetrievePhoto(int organisationId, int personnelId)
         {
@@ -1884,15 +1884,15 @@ namespace HR.Business
             }
             else
             {
-                var document = RetrieveDocumentPhoto(organisationId, personnelId);
-                if (document == null)
-                {
-                    _cacheProvider.Set(cacheKey, string.Empty, ConfigHelper.CacheTimeout);
-                    return string.Empty;
-                }
-                var documentBytes = _documentServiceAPI.Download(document.DocumentGuid);
-                bytes = documentBytes.Bytes;
-                _cacheProvider.Set(cacheKey, bytes, ConfigHelper.CacheTimeout);
+                //var document = RetrieveDocumentPhoto(organisationId, personnelId);
+                //if (document == null)
+                //{
+                //    _cacheProvider.Set(cacheKey, string.Empty, ConfigHelper.CacheTimeout);
+                //    return string.Empty;
+                //}
+                //var documentBytes = _documentServiceAPI.Download(document.DocumentGuid);
+                //bytes = documentBytes.Bytes;
+                //_cacheProvider.Set(cacheKey, bytes, ConfigHelper.CacheTimeout);
             }
 
             return bytes;
@@ -2285,34 +2285,36 @@ namespace HR.Business
         {
 
             var organisation = RetrieveOrganisation(organisationId);
-            var document = _documentServiceAPI.RetrieveDocument(documentDetailGuid);
+            //var document =  _documentServiceAPI.RetrieveDocument(documentDetailGuid);
 
-            if (document == null)
-                return null;
+            //if (document == null)
+            //    return null;
 
-            var documentBytes = _documentServiceAPI.Download(document.DocumentGuid);
+            //var documentBytes = _documentServiceAPI.Download(document.DocumentGuid);
 
-            JobTitleDocument jobTitleDocument = new JobTitleDocument
-            {
-                DocumentBytesString = documentBytes.Bytes,
-                DocumentFileName = document.FileName
-            };
+            //JobTitleDocument jobTitleDocument = new JobTitleDocument
+            //{
+            //    DocumentBytesString = documentBytes.Bytes,
+            //    DocumentFileName = document.FileName
+            //};
 
-            return jobTitleDocument;
+            //return jobTitleDocument;
+            return null;
         }
 
         public PagedResult<JobTitleDocument> RetrieveJobTitleDocuments(int organisationId, int jobTitleId, Paging paging)
         {
 
             var organisation = RetrieveOrganisation(organisationId);
-            var documents = _documentServiceAPI.RetrieveDocuments(organisation.Name, JobTitleDocumentCategory, jobTitleId.ToString())
-                .Select(rd => new JobTitleDocument
-                {
-                    Name = rd.Description,
-                    DocumentDetailId = rd.DocumentGuid
-                })
-                .AsQueryable().Paginate(paging);
-            return documents;
+            //var documents = _documentServiceAPI.RetrieveDocuments(organisation.Name, JobTitleDocumentCategory, jobTitleId.ToString())
+            //    .Select(rd => new JobTitleDocument
+            //    {
+            //        Name = rd.Description,
+            //        DocumentDetailId = rd.DocumentGuid
+            //    })
+            //    .AsQueryable().Paginate(paging);
+            //return documents;
+            return null;
         }
 
         public WorkingPattern RetrieveWorkingPattern(int organisationId, int workingPatternId)
@@ -2907,32 +2909,32 @@ namespace HR.Business
 
         public void DeleteJobTitleDocument(int organisationId, Guid documentDetailGuid)
         {
-            DeleteDocument(documentDetailGuid);
+            //DeleteDocument(documentDetailGuid);
         }
 
-        private void DeleteDocument(Guid documentGuid)
-        {
-            _documentServiceAPI.DeleteDocuments(new List<Guid> { documentGuid });
-        }
+        //private void DeleteDocument(Guid documentGuid)
+        //{
+        //    _documentServiceAPI.DeleteDocuments(new List<Guid> { documentGuid });
+        //}
 
         public void DeleteOvertime(int organisationId, int overtimeId)
         {
             _hrDataService.Delete<Overtime>(organisationId, overtimeId);
         }
 
-        public void DeletePhoto(int organisationId, int personnelId)
-        {
-            var document = RetrieveDocumentPhoto(organisationId, personnelId);
-            if (document != null)
-            {
-                DeleteDocument(document.DocumentGuid);
-            }
-            string cacheKey = PersonnelPhotoKey + personnelId;
-            if (_cacheProvider.IsSet(cacheKey))
-                _cacheProvider.Invalidate(cacheKey);
-            //set cache to let the server know there are no existing photo for this employee
-            _cacheProvider.Set(cacheKey, string.Empty, ConfigHelper.CacheTimeout);
-        }
+        //public void DeletePhoto(int organisationId, int personnelId)
+        //{
+        //    var document = RetrieveDocumentPhoto(organisationId, personnelId);
+        //    if (document != null)
+        //    {
+        //        DeleteDocument(document.DocumentGuid);
+        //    }
+        //    string cacheKey = PersonnelPhotoKey + personnelId;
+        //    if (_cacheProvider.IsSet(cacheKey))
+        //        _cacheProvider.Invalidate(cacheKey);
+        //    //set cache to let the server know there are no existing photo for this employee
+        //    _cacheProvider.Set(cacheKey, string.Empty, ConfigHelper.CacheTimeout);
+        //}
 
         public void DeleteTeam(int organisationId, int teamId)
         {

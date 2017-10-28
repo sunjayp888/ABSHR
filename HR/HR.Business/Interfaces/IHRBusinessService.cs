@@ -243,7 +243,7 @@ namespace HR.Business.Interfaces
         void DeleteEmploymentTeam(int organisationId, int employmentTeamId);
         void DeleteEmploymentType(int organisationId, int employmentTypeId);
         void DeleteOvertime(int organisationId, int overtimeId);
-        void DeletePhoto(int organisationId, int personnelId);
+       // void DeletePhoto(int organisationId, int personnelId);
         void DeleteTeam(int organisationId, int teamId);
         void DeleteSite(int organisationId, int siteId);
         void DeleteWorkingPattern(int organisationId, int workingPatternId);

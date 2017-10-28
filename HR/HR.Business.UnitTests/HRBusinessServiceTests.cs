@@ -1,4 +1,4 @@
-﻿using DocumentService.API.RESTClient.Interfaces;
+﻿//using DocumentService.API.RESTClient.Interfaces;
 using FluentAssertions;
 using FluentAssertions.Equivalency;
 using HR.Business.Interfaces;
@@ -22,7 +22,7 @@ namespace HR.Business.UnitTests
         private static Mock<ICacheProvider> _mockCacheProvider;
         private static Mock<ITemplateService> _mockTemplateService;
         private static Mock<IEmailService> _mockEmailService;
-        private static Mock<IDocumentServiceRestClient> _mockDocumentServiceRestClient;
+        //private static Mock<IDocumentServiceRestClient> _mockDocumentServiceRestClient;
 
         private IHRBusinessService _hrBusinessService;
 
@@ -33,9 +33,9 @@ namespace HR.Business.UnitTests
             _mockCacheProvider = new Mock<ICacheProvider>();
             _mockTemplateService = new Mock<ITemplateService>();
             _mockEmailService = new Mock<IEmailService>();
-            _mockDocumentServiceRestClient = new Mock<IDocumentServiceRestClient>();
+            //_mockDocumentServiceRestClient = new Mock<IDocumentServiceRestClient>();
 
-            _hrBusinessService = new HRBusinessService(_mockHRDataService.Object, _mockCacheProvider.Object, _mockTemplateService.Object, _mockEmailService.Object, _mockDocumentServiceRestClient.Object);
+           // _hrBusinessService = new HRBusinessService(_mockHRDataService.Object, _mockCacheProvider.Object, _mockTemplateService.Object, _mockEmailService.Object, _mockDocumentServiceRestClient.Object);
         }
 
         private void CheckList(IAssertionContext<IEnumerable> a)

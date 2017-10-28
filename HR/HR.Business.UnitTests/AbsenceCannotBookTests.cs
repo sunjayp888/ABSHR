@@ -5,7 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using DocumentService.API.RESTClient.Interfaces;
+//using DocumentService.API.RESTClient.Interfaces;
 using FluentAssertions;
 using FluentAssertions.Equivalency;
 using HR.Business.Interfaces;
@@ -25,7 +25,7 @@ namespace HR.Business.UnitTests
         private Mock<ICacheProvider> _mockCacheProvider;
         private Mock<ITemplateService> _mockTemplateService;
         private Mock<IEmailService> _mockEmailService;
-        private Mock<IDocumentServiceRestClient> _mockDocumentServiceRestClient;
+        //private Mock<IDocumentServiceRestClient> _mockDocumentServiceRestClient;
         private static WorkingPattern _workingPattern => new WorkingPattern()
         {
             WorkingPatternDays = new List<WorkingPatternDay>()
@@ -49,10 +49,10 @@ namespace HR.Business.UnitTests
             _mockCacheProvider = new Mock<ICacheProvider>();
             _mockTemplateService = new Mock<ITemplateService>();
             _mockEmailService = new Mock<IEmailService>();
-            _mockDocumentServiceRestClient = new Mock<IDocumentServiceRestClient>();
+            //_mockDocumentServiceRestClient = new Mock<IDocumentServiceRestClient>();
 
-            _hrBusinessService = new HRBusinessService(_mockHRDataService.Object, _mockCacheProvider.Object,
-            _mockTemplateService.Object, _mockEmailService.Object, _mockDocumentServiceRestClient.Object);
+            //_hrBusinessService = new HRBusinessService(_mockHRDataService.Object, _mockCacheProvider.Object
+            //_mockTemplateService.Object, _mockEmailService.Object, _mockDocumentServiceRestClient.Object);
 
         }
 

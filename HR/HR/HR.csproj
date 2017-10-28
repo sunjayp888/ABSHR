@@ -50,10 +50,6 @@
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DocumentService.API.RESTClient, Version=1.0.0.28026, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DocumentService.API.RESTClient.1.0.0.22\lib\net452\DocumentService.API.RESTClient.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.2\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -1440,6 +1436,7 @@
     <None Include="Properties\PublishProfiles\DevHR14.pubxml" />
     <None Include="Properties\PublishProfiles\HR14.pubxml" />
     <None Include="Properties\PublishProfiles\Publish.pubxml" />
+    <None Include="Properties\PublishProfiles\sanjay.pubxml" />
     <None Include="Properties\PublishProfiles\UAT.pubxml" />
     <Content Include="Views\Personnel\Index.cshtml" />
     <Content Include="Views\Shared\Pagination\_pagination.cshtml" />

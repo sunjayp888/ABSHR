@@ -410,7 +410,7 @@ namespace HR.Controllers
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
-                HRBusinessService.DeletePhoto(UserOrganisationId, id.Value);
+                //HRBusinessService.DeletePhoto(UserOrganisationId, id.Value);
                 return this.JsonNet("");
             }
             catch (Exception ex)

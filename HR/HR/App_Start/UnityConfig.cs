@@ -1,5 +1,5 @@
-using DocumentService.API.RESTClient;
-using DocumentService.API.RESTClient.Interfaces;
+//using DocumentService.API.RESTClient;
+//using DocumentService.API.RESTClient.Interfaces;
 using HR.Business;
 using HR.Business.Interfaces;
 using HR.Data;
@@ -49,12 +49,12 @@ namespace HR.App_Start
                     new InjectionParameter<string>(ConfigHelper.DefaultConnection)
                  ));
 
-            container.RegisterType<IDocumentServiceRestClient, DocumentServiceRestClient>(
-                new InjectionConstructor(
-                    new InjectionParameter<Uri>(new Uri(ConfigurationManager.AppSettings["DocumentRESTApiAddress"])),
-                    new InjectionParameter<string>(ConfigurationManager.AppSettings["Username"]),
-                    new InjectionParameter<string>(ConfigurationManager.AppSettings["Password"])
-                ));
+            //container.RegisterType<IDocumentServiceRestClient, DocumentServiceRestClient>(
+            //    new InjectionConstructor(
+            //        new InjectionParameter<Uri>(new Uri(ConfigurationManager.AppSettings["DocumentRESTApiAddress"])),
+            //        new InjectionParameter<string>(ConfigurationManager.AppSettings["Username"]),
+            //        new InjectionParameter<string>(ConfigurationManager.AppSettings["Password"])
+            //    ));
 
             // let's enforce a singleton on CacheProvider, even though it accesses a static MemoryCache.Default
             container.RegisterType<ICacheProvider, MemoryCacheProvider>(new ContainerControlledLifetimeManager());
