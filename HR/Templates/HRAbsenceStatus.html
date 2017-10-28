@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style type="text/css">
+        body, p, td {
+            font-size: 16pt;
+            font-family: "Calibri";
+        }
+
+        h1, h2, h3, h5 {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        .CenterText {
+            text-align: center;
+        }
+
+        .RightText {
+            text-align: right;
+        }
+
+        .TopText {
+            vertical-align: top;
+        }
+
+        .DoubleBottomBorder td {
+            border-bottom: 1px solid black;
+            width: 25%;
+        }
+
+        .PayslipBox {
+            margin-top: 20px;
+            border: solid 2px gray;
+            padding: 10px;
+        }
+
+            .PayslipBox table {
+                width: 100%;
+                border-style: none;
+                border-collapse: collapse;
+                border-width: 0;
+            }
+
+                .PayslipBox table td, .PayslipBox p {
+                    font-size: 15pt;
+                }
+    </style>
+</head>
+<body style="padding-left:50px">
+    <br />
+    <br />
+    <!-- Pay Statement Header -->
+    <table border="0" width="100%">
+        <tr>
+            <td class="TopText" width="20%">
+                <img src="E:\NidanWorkArea\NidanERP\source\Nidan\Nidan\Content\images\NEST.jpg" style="height: 172px; width: 250px;" />
+            </td>
+            <td class="CenterText TopText" width="60%">
+                <h2>NIDAN TECHNOLOGIES PVT.LTD.</h2>
+                <h5>Corporate Office: B 213-214, Shree Nanddhaam, Plot No.59, Sec.11, CBD Belapur, Navi Mumbai - 400614.</h5>
+                <h5>Branch Office: @Model.CentreAddress</h5>
+                <br />
+                <b>Absence Detail</b>
+            </td>
+            <td class="TopText RightText" width="20%">
+                <img src="E:\NidanWorkArea\NidanERP\source\Nidan\Nidan\Content\images\Nidan.jpg" style="height: 172px; width: 292px;" />
+            </td>
+        </tr>
+    </table>
+    <br />
+    <!-- Address & Date -->
+
+    <div class="PayslipBox">
+        <table border="0">
+            <tr>
+                <td style="font-weight: bold">ABSENCE DETAILS</td>
+            </tr>
+            <tr>
+                <td>
+                    <table>
+                        <tr>
+                            <td>PersonnelName :</td>
+                            <td>@Model.PersonnelName</td>
+                        </tr>
+                        <tr>
+                            <td>Email</td>
+                            <td>@Model.Email</td>
+                        </tr>
+                        <tr>
+                            <td>AbsenceType :</td>
+                            <td>@Model.AbsenceType</td>
+                        </tr>
+                        <tr>
+                            <td>Duration :</td>
+                            <td>@Model.Duration</td>
+                        </tr>
+                        <tr>
+                            <td>ApprovalState :</td>
+                            <td>@Model.ApprovalState</td>
+                        </tr>
+                        <tr>
+                            <td>From :</td>
+                            <td>@Model.From</td>
+                        </tr>
+                        <tr>
+                            <td>To :</td>
+                            <td>@Model.To</td>
+                        </tr>
+                        <tr>
+                            <td>Description :</td>
+                            <td>@Model.Description</td>
+                        </tr>
+
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <br />
+        <br />
+        <a href="@Model.LinkUrl">Click here for details.</a> 
+    </div>
+</body>
+</html>

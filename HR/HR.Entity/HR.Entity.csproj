@@ -48,6 +48,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
@@ -110,6 +111,7 @@
     <Compile Include="Partials\ApprovalState.cs" />
     <Compile Include="Partials\Approval.cs" />
     <Compile Include="Partials\PersonnelApprovalModel.cs" />
+    <Compile Include="Partials\Template.cs" />
     <Compile Include="PersonnelApprovalModel.cs" />
     <Compile Include="AspNetUsers.cs" />
     <Compile Include="Colour.cs" />
@@ -206,6 +208,7 @@
     <Compile Include="Dto\ScheduleItem.cs" />
     <Compile Include="Dto\ScheduleItemType.cs" />
     <Compile Include="Site.cs" />
+    <Compile Include="Template.cs" />
     <Compile Include="UserAuthorisationFilter.cs" />
     <Compile Include="Validation\DateGreaterThanAttribute.cs" />
     <Compile Include="WorkingPattern.cs" />

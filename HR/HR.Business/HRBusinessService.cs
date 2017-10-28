@@ -1,6 +1,5 @@
 ﻿//using DocumentService.API.RESTClient.Interfaces;
 //using DocumentService.API.RESTClient.Models;
-using HR.Business.EmailServiceReference;
 using HR.Business.Extensions;
 using HR.Business.Interfaces;
 using HR.Business.Models;
@@ -19,6 +18,8 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Script.Serialization;
+using SharedTypes.DataContracts;
+
 
 namespace HR.Business
 {
@@ -29,7 +30,7 @@ namespace HR.Business
         private ICacheProvider _cacheProvider;
         private ITemplateService _templateService;
         private Interfaces.IEmailService _emailService;
-     //   private IDocumentServiceRestClient _documentServiceAPI;
+        //   private IDocumentServiceRestClient _documentServiceAPI;
         private enum ShowColour { Company, Department, Team };
         private const string OrganisationCacheKey = "Organisations";
         private const string OrganisationEmploymentsTreeKey = "OrganisationEmploymentsTree";
@@ -51,10 +52,10 @@ namespace HR.Business
             _cacheProvider = cacheProvider;
             _templateService = templateService;
             _emailService = emailService;
-       //     _documentServiceAPI = documentServiceAPI;
+            //     _documentServiceAPI = documentServiceAPI;
         }
 
-        private void SendAbsenceStatusMessage(Absence absence)
+        private void SendAbsenceStatusMessage(int organisationId, Absence absence)
         {
             var status = "Requested";
             switch ((ApprovalStates)absence.ApprovalStateId)
@@ -89,14 +90,14 @@ namespace HR.Business
                 LinkText = "Click here to view absence."
             };
 
-            //var emailBody = _templateService.CreateText(JsonConvert.SerializeObject(absenceStatusMessage), AbsenceStatusTemplateKey);
+            var emailBody = _templateService.CreateText(organisationId, JsonConvert.SerializeObject(absenceStatusMessage), AbsenceStatusTemplateKey);
 
             var emailData = new EmailData
             {
                 FromAddress = ConfigHelper.EmailDefaultFromAddress,
                 ToAddressList = new List<string> { personnelNode.Value.Personnel.Email },
                 Subject = string.Format("Absence {0}", status),
-                Body = "Testing",
+                Body = emailBody,
                 IsHtml = true
             };
 
@@ -304,7 +305,7 @@ namespace HR.Business
 
             UpdateAbsencePersonnelAbsenceEntitlement(organisationId, absence, null);
 
-            SendAbsenceStatusMessage(absence);
+            SendAbsenceStatusMessage(organisationId, absence);
 
             CreateAppovalRows(organisationId, absenceRange.PersonnelId, ApprovalTypes.Absence, absenceRange.AbsenceId.Value);
             StartApprovalProcess(organisationId, ApprovalTypes.Absence, absenceRange.AbsenceId.Value, string.Empty);
@@ -751,7 +752,7 @@ namespace HR.Business
             }).FirstOrDefault();
 
 
-            var emailBody = _templateService.CreateText(JsonConvert.SerializeObject(approvalEmailAbsences), ApprovalAbsenceTemplateKey);
+            var emailBody = _templateService.CreateText(organisationId, JsonConvert.SerializeObject(approvalEmailAbsences), ApprovalAbsenceTemplateKey);
 
             var emailData = new EmailData
             {
@@ -783,7 +784,7 @@ namespace HR.Business
                 Reason = overtime.Reason
             }).FirstOrDefault();
 
-            var emailBody = _templateService.CreateText(JsonConvert.SerializeObject(approvalEmailOvertimes), ApprovalOvertimeTemplateKey);
+            var emailBody = _templateService.CreateText(organisationId, JsonConvert.SerializeObject(approvalEmailOvertimes), ApprovalOvertimeTemplateKey);
 
             var emailData = new EmailData
             {
@@ -1400,7 +1401,7 @@ namespace HR.Business
                 .Distinct(new ScheduleItemTypeComparer())
                 .OrderBy(by => by.Name)
                 .ToList();
-            
+
             var personnelDetails = RetrievePersonnelDetails(organisationId, personnelId, permission, personnelFilter, showColourBy, true);
             //Call a method GetAbsenceSlots
             var scheduleItems = personnelDetails.Select(p => new ScheduleItem
@@ -2362,7 +2363,7 @@ namespace HR.Business
                 absence.AbsenceStatusDateTimeUtc = DateTime.UtcNow;
                 absence = _hrDataService.UpdateOrganisationEntityEntry(organisationId, absence);
                 UpdateAbsencePersonnelAbsenceEntitlement(organisationId, null, absence);
-                SendAbsenceStatusMessage(absence);
+                SendAbsenceStatusMessage(organisationId, absence);
             }
         }
 
@@ -2374,7 +2375,7 @@ namespace HR.Business
             absence.AbsenceStatusDateTimeUtc = DateTime.UtcNow;
             _hrDataService.UpdateOrganisationEntityEntry(organisationId, absence);
             UpdateAbsencePersonnelAbsenceEntitlement(organisationId, null, absence);
-            SendAbsenceStatusMessage(absence);
+            SendAbsenceStatusMessage(organisationId, absence);
         }
 
         private void AbsenceApproved(int organisationId, int entityId, string updatedBy)
@@ -2383,7 +2384,7 @@ namespace HR.Business
             absence.ApprovalStateId = (int)ApprovalStates.Approved;
             absence.AbsenceStatusDateTimeUtc = DateTime.UtcNow;
             _hrDataService.UpdateOrganisationEntityEntry(organisationId, absence);
-            SendAbsenceStatusMessage(absence);
+            SendAbsenceStatusMessage(organisationId, absence);
         }
 
         public ValidationResult UpdateAbsence(int organisationId, AbsenceRange absenceRange)
@@ -2456,7 +2457,7 @@ namespace HR.Business
             }
             return validationResult;
         }
-        
+
         private void OvertimeApproved(int organisationId, int entityId, string updatedBy)
         {
             var overtime = _hrDataService.Retrieve<Overtime>(organisationId, entityId);

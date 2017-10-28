@@ -58,6 +58,8 @@ namespace HR.Data.Models
         public virtual DbSet<JobTitle> JobTitles { get; set; }
         public virtual DbSet<EmploymentPersonnelAbsenceEntitlement> EmploymentPersonnelAbsenceEntitlements { get; set; }
         public virtual DbSet<JobTitleJobGrade> JobTitleJobGrades { get; set; }
+        public virtual DbSet<Template> Templates { get; set; }
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

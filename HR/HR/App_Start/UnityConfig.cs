@@ -9,6 +9,8 @@ using HR.Interfaces;
 using Microsoft.Practices.Unity;
 using System;
 using System.Configuration;
+using Nidan.Business;
+using Nidan.Business.Interfaces;
 
 namespace HR.App_Start
 {
@@ -57,19 +59,24 @@ namespace HR.App_Start
             //    ));
 
             // let's enforce a singleton on CacheProvider, even though it accesses a static MemoryCache.Default
+            // let's enforce a singleton on CacheProvider, even though it accesses a static MemoryCache.Default
             container.RegisterType<ICacheProvider, MemoryCacheProvider>(new ContainerControlledLifetimeManager());
             container.RegisterType<IHRDataService, HRDataService>(new ContainerControlledLifetimeManager());
             container.RegisterType<IHRBusinessService, HRBusinessService>(new ContainerControlledLifetimeManager());
             container.RegisterType<ITenantOrganisationService, HRBusinessService>(new ContainerControlledLifetimeManager());
-            container.RegisterType<ITemplateService, TemplateService>(new ContainerControlledLifetimeManager());
-            container.RegisterType<IEmailService, EmailService>(new ContainerControlledLifetimeManager(), 
-                new InjectionConstructor( 
+            // container.RegisterType<ITemplateService, TemplateService>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IEmailService, EmailService>(new ContainerControlledLifetimeManager(),
+                new InjectionConstructor(
                     new InjectionParameter<string>(ConfigHelper.OverrideEmailAddresses)
                 )
             );
 
+            //container.RegisterType<IDocumentService, DocumentService>(new ContainerControlledLifetimeManager());
             container.RegisterType<ITenantsService, TenantsService>(new ContainerControlledLifetimeManager());
-
+            container.RegisterType<IPdfService, PdfService>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IRazorService, RazorService>(new ContainerControlledLifetimeManager());
+            container.RegisterType<ITemplateService, TemplateService>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IEmailService, EmailService>(new ContainerControlledLifetimeManager());
         }
     }
 }
